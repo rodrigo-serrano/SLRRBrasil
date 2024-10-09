@@ -1,0 +1,21 @@
+lods 3 0.001 1.000 2.000
+
+#render		0x???????? ;
+#lod 0 0 // lo-res
+
+#render		0x00000C08 ;
+lod 1 1 // hi-res
+
+render		0x00000C08 ;
+lod 2 2 // extr-hi-res
+
+click		0x00000B02
+
+slot		0.000 0.000 0.000	0.000 0.000 0.000	1
+compatible	0x00020024 1
+
+category 3
+damage		10.0
+intdamage	10000000.0
+
+eof

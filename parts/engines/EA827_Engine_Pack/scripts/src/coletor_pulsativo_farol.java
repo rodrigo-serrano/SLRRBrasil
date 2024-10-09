@@ -1,0 +1,26 @@
+package java.game.parts.engines.EA827_Engine_Pack;
+
+import java.util.*;
+import java.util.resource.*;
+import java.game.*;
+import java.game.parts.*;
+import java.game.parts.enginepart.*;
+
+
+public class coletor_pulsativo_farol extends ExhaustHeader
+{
+	public coletor_pulsativo_farol( int id )
+	{
+		super( id );
+		name = "Coletor Turbo Pulsativo Lafitte Volkswagen AP 8v";
+		description = "";
+
+		value = 450;
+		brand_new_prestige_value = 153.28;
+		setMaxWear(kmToMaxWear(330000.0));
+
+		efficiency = 0.88;
+
+		check4warnings();
+	}
+}

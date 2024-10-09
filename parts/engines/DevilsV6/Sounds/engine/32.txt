@@ -1,0 +1,5 @@
+onidle:onvlow1	1:1.5874
+onvlow1:onvlow2	1:1.1225
+onvlow2:onlow	1:1.374
+onlow:onmid	1:1.374
+onmid:onhigh	1:1.5

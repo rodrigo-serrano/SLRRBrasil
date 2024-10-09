@@ -1,0 +1,19 @@
+﻿# Vehicle importer wizard generated part configuration file #
+# resource ID of this part: 0x0000016B
+# resource alias of this part: "Gauge_Turbo2"
+
+render 0x00000126
+
+mesh 0x0000009F
+
+click 0x000001AD
+
+body		0.000 0.000 0.000 0.000 0.000 0.000	0.100	parts\LDelta_Interior\meshes\_phys_L_headlights.scx	;0x00000025
+# total mass: 0.100 kg
+
+category	2
+
+slot		0.000 0.000 0.000 0.000 0.000 0.000	1
+compatible	0x0002016B 1
+
+eof

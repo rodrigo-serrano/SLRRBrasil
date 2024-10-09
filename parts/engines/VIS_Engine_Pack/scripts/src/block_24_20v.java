@@ -1,0 +1,115 @@
+package java.game.parts.engines.VIS_Engine_Pack;
+
+import java.util.*;
+import java.util.resource.*;
+import java.game.*;
+import java.game.parts.*;
+import java.game.parts.enginepart.*;
+import java.game.parts.enginepart.block.block_inline.*;
+import java.game.cars.*;
+
+
+public class block_24_20v extends Block_Inline_OHC
+{
+	public block_24_20v( int id )
+	{
+		super( id );
+		name = "Bloco Fiat V.I.S. 2.4 20v";
+		description = "";
+
+		value = 650;
+		brand_new_prestige_value = 70.64;
+		setMaxWear(kmToMaxWear(420000.0));
+
+		bore = 83.0;
+
+		crankshaft_slot_ID = 33;
+		crankshaft_bearing_slot_ID = 41;
+		cylinder_head_slot_ID = 19;
+		transmission_slot_ID = 35;
+		oil_pan_slot_ID = 31;
+
+		cylinder_length_from_top = 170.44;
+		crank_center_to_cylinder_top = 231.70;
+
+		rpm_idle = 1000.0;
+		time_spark_min	= sparkAngleTo4cycleTime(332.0);
+		time_spark_inc	= sparkAngleTo4cycleTime(387.0)-time_spark_min;
+		time_spark_RPM0	= 1550;
+		time_spark_RPM1	= 8500;
+		RPM_limit	= 7000;
+
+		cylinders	= 5;
+
+		check4warnings();
+	}
+
+	public void updatevariables()
+	{
+		super.updatevariables();
+
+		if (the_car)
+		{
+			the_car.starter_torque = 40.0;
+
+			SfxTable tab;
+			if (tab = the_car.getSfxTable(0))//on
+			{
+						tab.clear();
+				tab.addItem(new ResourceRef(EngineSoundPack:0x00000012r), 2500,   500.0, 2500.0, 0.5, 0.6);//low
+				tab.addItem(new ResourceRef(EngineSoundPack:0x00000014r), 6000,  1000.0, 5500.0, 0.7, 0.8);//mid
+				tab.addItem(new ResourceRef(EngineSoundPack:0x0000000Fr), 7050,  4000.0, RPM_limit+600.0, 0.8, 0.9);//high
+				tab.addItem(new ResourceRef(EngineSoundPack:0x00000011r), 7300,  RPM_limit-600.0, 12000.0, 0.9, 0.9);//limiter
+                                if(dynodata.P_turbo_max !=0.0)
+				{
+					if(dynodata.P_turbo_max == 2.50)
+					tab.addItem(new ResourceRef(addon.Sounds.PureSound.General:0x00000014r), 5000, 2500.0, 18000.0, 2.0, 3.0);//spool
+					else if(dynodata.P_turbo_max == 1.80)
+					tab.addItem(new ResourceRef(addon.Sounds.PureSound.General:0x00000017r), 5000, 2500.0, 18000.0, 2.0, 3.0);//spool
+				}
+			}
+
+			if (tab = the_car.getSfxTable(1))//off
+			{
+				tab.clear();
+				tab.addItem(new ResourceRef(EngineSoundPack:0x0000000Ar),  1300,   400.0, 2500.0, 0.5, 0.7);//idle			
+				tab.addItem(new ResourceRef(EngineSoundPack:0x0000000Br), 7050,  1500.0, 12000.0, 0.8, 0.9);//mid
+                               if (dynodata.mixture_ratio < 9.0 )
+						{	
+							tab.addItem(new ResourceRef(EngineSoundPack:0x000004ECr), 5500.0, 4000.0, 12000.0, 3.0, 3.0); //BACKFIRE
+						}				
+                                  if(dynodata.P_turbo_max !=0.0)
+				{
+					if(dynodata.P_turbo_max == 2.50)
+					tab.addItem(new ResourceRef(addon.Sounds.PureSound.General:0x00000010r), 5000, 2500.0, 18000.0, 2.0, 3.0);//spool
+					else if(dynodata.P_turbo_max == 1.80)
+					tab.addItem(new ResourceRef(addon.Sounds.PureSound.General:0x00000011r), 5000, 2500.0, 18000.0, 2.0, 3.0);//spool                                    
+				}
+		
+			}
+			if (tab = the_car.getSfxTable(2))
+			{
+				tab.clear();
+				the_car.setSfxExhaustMinVol(0.1);
+			}
+		}
+	}
+
+	public void addStockParts( Descriptor desc )
+	{
+		super.addStockParts( desc );
+
+		getCar_LocalVersion();
+	}
+
+	public String isDynoable()
+	{
+		Part p;
+
+		p = partOnSlot( 32 );
+		if (!p)
+			return "O Motor esta sem Alternador.";
+
+		return super.isDynoable();
+	}
+}

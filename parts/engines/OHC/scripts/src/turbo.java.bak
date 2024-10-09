@@ -1,0 +1,34 @@
+package java.game.parts.engines.CHT16;
+
+import java.util.*;
+import java.util.resource.*;
+import java.game.*;
+import java.game.parts.*;
+import java.game.parts.enginepart.*;
+import java.game.parts.enginepart.airfueldeliverysystem.charger.*;
+
+
+public class turbo extends TurboCharger
+{
+	public turbor( int id )
+	{
+		super( id );
+		name = "KKK K26 turbocharger";
+		description = "Made by Timek9";
+		brand_new_prestige_value = 109.30;
+
+		value = tHUF2USD(769.878);
+
+		calculateOptandRange (1500.0, 8750.0);
+		P_turbo_max	= 60.00;
+		default_P_turbo_waste	= 0.5;
+		P_turbo_waste	= default_P_turbo_waste;
+
+		max_waste	= 60.0;
+		min_waste	= 0.25;
+	}
+
+
+
+	
+}

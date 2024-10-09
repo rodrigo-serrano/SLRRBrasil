@@ -1,0 +1,15 @@
+# Canister 1
+
+mesh	0x00000A01
+render	0x00000C05
+click	0x00000B01
+
+category 2
+
+slot		0.000 0.000 0.000	3.142 0.900 0.000	10	;
+attach		0x00000D00 2	;
+attach		0x00000D01 2	;
+attach		0x00000D02 2	;
+attach		0x00000D03 2	;
+
+eof

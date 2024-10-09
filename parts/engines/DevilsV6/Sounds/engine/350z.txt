@@ -1,0 +1,5 @@
+onlow:idle		1.78:1
+onidle:onlow		1.5:1
+onmid:onlow		1.5:1
+onmid:onhigh		1:1.335
+offrumble:offhigh	1:0.9

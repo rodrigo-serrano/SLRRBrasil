@@ -1,0 +1,48 @@
+idle        153
+offHigh     149
+offLow      101, 152 
+offMid      128, 192
+onHigh      261
+onLow       102, 156
+onMid       183
+limiter     120
+
+idleTuned       65, 231 
+offHighTuned    210 
+offLowTuned     244, 366   
+offMidTuned     241,  271, 451 
+onHighTuned     202 
+onLowTuned      228 
+onMidTuned      161 
+limiterTuned    230
+
+</FILE>
+<FILE 00000005.res >
+typeof	6
+superid	0x0000B055
+typeid	0x00000FA0
+alias	0900
+isparentcompatible	1.00
+</FILE>
+<FILE 00000005.rsd >
+sourcefile parts\engines\boxer_fusca\sounds\900rpm.wav
+<FILE 00000005.res >
+typeof	6
+superid	0x0000B055
+typeid	0x00000FA1
+alias	0900
+isparentcompatible	1.00
+</FILE>
+<FILE 00000005.rsd >
+sourcefile parts\engines\boxer_fusca\sounds\2500rpm.wav
+</FILE>
+<FILE 00000005.res >
+typeof	6
+superid	0x0000B055
+typeid	0x00000FA2
+alias	0900
+isparentcompatible	1.00
+</FILE>
+<FILE 00000005.rsd >
+sourcefile parts\engines\boxer_fusca\sounds\6000rpm.wav
+</FILE>

@@ -1,0 +1,61 @@
+public void updatevariables()
+	{
+		super.updatevariables();
+
+		if (the_car)
+		{
+                        the_car.starter_torque = 30.0;
+
+			 SfxTable tab;
+			if (tab = the_car.getSfxTable(0))//on
+			{
+				tab.clear();
+				tab.addItem(new ResourceRef(EngineSoundPack:0x000001EDr), 2500,   500.0, 3000.0, 0.5, 0.6);//onidle
+				tab.addItem(new ResourceRef(EngineSoundPack:0x000001F0r), 3500,  1000.0, 3500.0, 0.6, 0.7);//onverylow
+				tab.addItem(new ResourceRef(EngineSoundPack:0x000001EEr), 5000,  2500.0, 5500.0, 0.7, 0.8);//onlow
+				tab.addItem(new ResourceRef(EngineSoundPack:0x000001ECr), 7500,  4000.0, RPM_limit+1600, 0.8, 0.9);//onhigh
+				tab.addItem(new ResourceRef(EngineSoundPack:0x000001E7r), 6500,  RPM_limit-600, 18000.0, 0.9, 0.9);//limiter
+                                 if(dynodata.P_turbo_max !=0.0)
+				{
+					if(dynodata.P_turbo_max == 3.0)
+					tab.addItem(new ResourceRef(addon.Sounds.PureSound.General:0x00000014r), 5000, 2500.0, 18000.0, 2.0, 3.0);//spool
+					else if(dynodata.P_turbo_max == 9.5)
+					tab.addItem(new ResourceRef(addon.Sounds.PureSound.General:0x00000018r), 5000, 2500.0, 18000.0, 2.0, 3.0);//spool
+                                        else if(dynodata.P_turbo_max == 1.5)
+					tab.addItem(new ResourceRef(addon.Sounds.PureSound.General:0x00000018r), 5000, 2500.0, 18000.0, 2.0, 3.0);//spool
+				}
+					
+			}
+
+			if (tab = the_car.getSfxTable(1))//off
+			{
+				tab.clear();
+				tab.addItem(new ResourceRef(EngineSoundPack:0x000001E6r), 1000,  500.0, 3500.0, 0.3, 0.4);//idle			
+				tab.addItem(new ResourceRef(EngineSoundPack:0x000001EBr), 3000,  500.0, 3500.0, 0.4, 0.5);//offverylow			
+				tab.addItem(new ResourceRef(EngineSoundPack:0x000001E9r), 5000,  500.0, 5500.0, 0.5, 0.6);//offlow			
+				tab.addItem(new ResourceRef(EngineSoundPack:0x000001EAr), 6000,  3500.0, 6500.0, 0.6, 0.7);//offmid			
+				tab.addItem(new ResourceRef(EngineSoundPack:0x000001E8r), 7500,  1000.0, 12000.0, 0.1, 0.8);//offhigh
+                                 if (dynodata.mixture_ratio <= 10.5 )
+						{	
+							tab.addItem(new ResourceRef(EngineSoundPack:0x000004F5r), 5500.0, 4000.0, 12000.0, 3.0, 3.0); //BACKFIRE
+						}				
+                                  if(dynodata.P_turbo_max !=0.0)
+				{
+					if(dynodata.P_turbo_max == 3.0)
+					tab.addItem(new ResourceRef(addon.Sounds.PureSound.General:0x00000015r), 5000, 2500.0, 18000.0, 2.0, 3.0);//spool
+					else if(dynodata.P_turbo_max == 9.5)
+					tab.addItem(new ResourceRef(addon.Sounds.PureSound.General:0x00000000r), 5000, 2500.0, 18000.0, 2.0, 3.0);//spool
+                                        else if(dynodata.P_turbo_max == 1.5)
+					tab.addItem(new ResourceRef(addon.Sounds.PureSound.General:0x00000000r), 5000, 2500.0, 18000.0, 2.0, 3.0);//spool
+				}
+                             
+			}
+
+			if (tab = the_car.getSfxTable(2))
+			{
+				tab.clear();			
+				the_car.setSfxExhaustMinVol(0.9);
+			}
+
+		}
+	}

@@ -1,0 +1,19 @@
+﻿# Vehicle importer wizard generated part configuration file #
+# resource ID of this part: 0x00000167
+# resource alias of this part: "Gauge_Pressoleo"
+
+render 0x00000122
+
+mesh 0x0000009B
+
+click 0x000001A9
+
+body		0.000 0.000 0.000 0.000 0.000 0.000	0.100	parts\LDelta_Interior\meshes\_phys_L_headlights.scx	;0x00000025
+# total mass: 0.100 kg
+
+category	2
+
+slot		0.000 0.000 0.000	0.000 0.000 0.000	1
+compatible	0x00020167 1
+
+eof

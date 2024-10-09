@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/scripts/brakes/src" isTestSource="false" packagePrefix="java.game.parts.running_gear.brakes" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="Turbo_Gauge" />
+    <orderEntry type="module" module-name="scripts_8" />
+    <orderEntry type="module" module-name="kirkey" />
+    <orderEntry type="module" module-name="Tachometer_pack" />
+    <orderEntry type="module" module-name="seat_pack_r&amp;b" />
+    <orderEntry type="module" module-name="osd" />
+    <orderEntry type="module" module-name="reciprocatingrgearpart" />
+    <orderEntry type="module" module-name="scripts" />
+    <orderEntry type="module" module-name="seat_pack_imports_rpk" />
+    <orderEntry type="module" module-name="scripts_7" />
+    <orderEntry type="module" module-name="Universal_Gear_Indicator" />
+    <orderEntry type="module" module-name="rim_packno1" />
+    <orderEntry type="module" module-name="jz_mufflers" />
+    <orderEntry type="module" module-name="util" />
+    <orderEntry type="module" module-name="scripts_3" />
+    <orderEntry type="module" module-name="fm3_rims" />
+  </component>
+</module>

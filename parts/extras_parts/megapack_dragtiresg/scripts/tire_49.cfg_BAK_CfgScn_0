@@ -1,0 +1,55 @@
+﻿# this gametype is called "Tyre" and its ID is 0x00000005 #
+
+render 0x00000093
+
+mesh 0x00000042
+
+click 0x000000E4
+
+
+
+body		0.000 0.000 0.000	0.000 0.000 0.000	0.107	sphere 0.01
+noclick
+
+slot		0.000 0.000 0.000	3.142 0.000 0.000	1	;
+attach		0x00020200 2
+
+category 3
+damage		3.0
+intdamage	1000000000.0
+
+eof
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

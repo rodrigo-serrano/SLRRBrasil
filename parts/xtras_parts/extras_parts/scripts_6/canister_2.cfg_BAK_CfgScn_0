@@ -1,0 +1,15 @@
+# Canister 2
+
+render	0x00000C01
+click	0x00000B00
+
+slot	0 0 0	0 0 0	1
+compatible	0x00023200 1
+
+category 2
+damage		10.0
+intdamage	10000000.0
+
+slot		0.023 0.182 -0.217	0.000 0.000 0.800	2	; press_gauge
+
+eof

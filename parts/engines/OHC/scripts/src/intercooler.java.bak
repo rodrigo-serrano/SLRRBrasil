@@ -1,0 +1,19 @@
+package java.game.parts.engines.CHT16;
+
+import java.util.*;
+import java.util.resource.*;
+import java.game.parts.enginepart.*;
+
+public class intercooler extends AirCooler
+{
+	public intercooler( int id )
+	{
+		super( id );
+		carCategory = PACKAGE;
+		name = "CHT 1.6 Turbo intercooler";
+		description = "";
+		brand_new_prestige_value = 53.11;
+
+		value = tHUF2USD(57.740);
+	}
+}

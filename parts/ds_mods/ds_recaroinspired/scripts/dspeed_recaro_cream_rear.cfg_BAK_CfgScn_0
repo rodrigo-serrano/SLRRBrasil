@@ -1,0 +1,42 @@
+﻿# Vehicle importer wizard generated part configuration file #
+# resource ID of this part: 0x0000004D
+# resource alias of this part: "seat_Torino"
+
+render 0x0000003E
+
+
+
+
+
+mesh 0x0000001E
+
+
+
+
+
+click 0x0000005E
+
+
+
+
+
+
+mesh 0x0000001E
+
+
+
+
+
+
+category	2
+
+slot		0.000 -0.433 -0.147	0.000 0.000 0.000	1 ; R_seats
+attach 0x00000006 903 ; chassis->R_seats
+compatible	0x0002007D 1
+
+eof
+
+
+
+
+

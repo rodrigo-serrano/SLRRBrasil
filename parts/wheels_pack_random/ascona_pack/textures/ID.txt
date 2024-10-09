@@ -1,0 +1,7 @@
+logo5.png 0x00000211
+rim5.png 0x00000212
+chrome.png 0x00000002
+
+0x00001111 blacknred
+
+BORBET.png 0x00000293

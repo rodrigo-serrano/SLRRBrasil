@@ -1,0 +1,2 @@
+colors.png	- 0x00000009
+volks_logo.png	- 0x00000AA9

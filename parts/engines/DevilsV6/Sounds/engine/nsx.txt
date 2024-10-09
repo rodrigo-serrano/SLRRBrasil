@@ -1,0 +1,8 @@
+idle:onidle	1:1.26
+onidle:onvlow	1:1.19
+onvlow:onlow	0.75:1
+onlow:onmid	1:1.5
+onmid:onhigh	0.75:1
+
+offhigh:onhigh	1:1.16
+onhigh:limiter	1:1.06
