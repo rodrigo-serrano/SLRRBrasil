@@ -9,7 +9,7 @@ import java.render.osd.*;
 public class Dialog extends GameType
 {
 	final static int RID_DIALOGBG	= frontend:0x000Er;
-	
+
 	final static float DEF_SIZE		= 0.6;
 	final static float DEF_ASPECT	= 4.0/3.0;
 	final static float DEF_BODYRATIO= 0.9;
@@ -46,7 +46,7 @@ public class Dialog extends GameType
 	Osd				backShieldOsd;
 
 	float			bodyRatio = DEF_BODYRATIO;
-	
+
 	int				shown;
 
 	private Dialog()
@@ -82,10 +82,10 @@ public class Dialog extends GameType
 		if( flags&DF_FULLSCREEN )
 			osd = new Osd( 1.0, 0.0, priority );
 		else
-			if( flags&DF_WIDE )
-				osd = new Osd( 0.9, 6.0/3.0, priority );
-			else
-				osd = new Osd( size, aspect, cx, cy, refx, refy, priority );
+		if( flags&DF_WIDE )
+			osd = new Osd( 0.9, 6.0/3.0, priority );
+		else
+			osd = new Osd( size, aspect, cx, cy, refx, refy, priority );
 
 		if( flags&DF_DEFAULTBG )
 			osd.createBG( new ResourceRef( RID_DIALOGBG ) );
@@ -99,8 +99,8 @@ public class Dialog extends GameType
 	public void show()
 	{
 		new SfxRef( Frontend.SFX_MENU_MOVE ).precache();
-		new SfxRef( Frontend.SFX_MENU_SELECT ).precache(); 
-		new SfxRef( Frontend.SFX_QUESTION ).precache(); 
+		new SfxRef( Frontend.SFX_MENU_SELECT ).precache();
+		new SfxRef( Frontend.SFX_QUESTION ).precache();
 
 		shown=1;
 
@@ -161,8 +161,8 @@ public class Dialog extends GameType
 		}
 
 		if( !flags&DF_SILENT )
-			new SfxRef( Frontend.SFX_QUESTION ).play(); 
-	
+			new SfxRef( Frontend.SFX_QUESTION ).play();
+
 		osd.show();
 		if( controller )
 		{
@@ -188,7 +188,7 @@ public class Dialog extends GameType
 
 		if( controller )
 			controller.reset( css );
-		
+
 		osd.hide();
 
 		if( backShieldOsd )
@@ -219,7 +219,7 @@ public class Dialog extends GameType
 		hide();
 		return result;
 	}
-		
+
 }
 
 
@@ -434,7 +434,7 @@ public class FileRequesterDialog extends OKCancelDialog
 			if( index )
 			{
 				index -= MAX_ENTRIES;
-				setButtonNames();		
+				setButtonNames();
 			}
 		}
 		else
@@ -443,7 +443,7 @@ public class FileRequesterDialog extends OKCancelDialog
 			if( index+MAX_ENTRIES < fileNameList.size() )
 			{
 				index += MAX_ENTRIES;
-				setButtonNames();		
+				setButtonNames();
 			}
 		}
 		else
