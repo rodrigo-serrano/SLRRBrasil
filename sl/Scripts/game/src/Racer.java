@@ -9,7 +9,7 @@ import java.sound.*;
 
 public class Racer extends GameType
 {
-	final static int	RID_FEJ		= frontend:0x00009900r; //RAXAT: changed in v2.3.1
+	final static int	RID_FEJ = frontend:0x00dar;
 	final static int	RID_COP		= frontend:0x000099EEr;
 	final static int	RID_VINCE	= frontend:0x000099EFr;
 
