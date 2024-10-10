@@ -1,11 +1,12 @@
 package java.game;
 
-import java.render.Frontend;
-import java.render.Osd;
-import java.render.Text;
-import java.render.osd.dialog.Dialog;
-import java.sound.*;
+import java.io.*;
+import java.util.*;
 import java.util.resource.*;
+import java.render.*;
+import java.render.osd.*;
+import java.render.osd.dialog.*;
+import java.sound.*;
 
 //this dialog allows to adjust bets in night drag races
 public class BetDialog extends Dialog

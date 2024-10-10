@@ -48,7 +48,7 @@ public class City extends Track
 	final static int		RID_DAY_CHALLENGE = frontend:0x00A5r;
 
 	final static ResourceRef	RRT_FRAME = new ResourceRef(frontend:0x00CBr);
-
+	
 	// commands, nem utkozhet a Track.java commandokkal!!
 	final static int		CMD_PARTICIPATE = 1001;
 	final static int		CMD_WATCH_RACE = 1002;
@@ -66,32 +66,32 @@ public class City extends Track
 	final static int		NR_SHOWFINISH = 8;
 
 
-	Vector3[]	posGarage = new Vector3[GameLogic.CLUBS];
-	Ypr[]		oriGarage = new Ypr[GameLogic.CLUBS];
+    Vector3[]	posGarage = new Vector3[GameLogic.CLUBS];
+    Ypr[]		oriGarage = new Ypr[GameLogic.CLUBS];
 
 
-	int						time;
-	int						prize;
-
+    int						time;
+    int						prize;
+	
 	Text					statusTxt, oppStatusTxt;
 	int						oppStatusDisplayed;
 	int						collision;
 
 
-	//--------day racing stuff--------:
-	Vector3                 raceStart, raceFinish;
-	Trigger                 trRaceFinish;
-	RenderRef               finishObject;
+    //--------day racing stuff--------:
+    Vector3                 raceStart, raceFinish;
+    Trigger                 trRaceFinish;
+    RenderRef               finishObject;
 	RaceDialog				raceDialog;
 
-	Racer                   challenger, challenged;
-	Marker                  mStart, mFinish;
+    Racer                   challenger, challenged;
+    Marker                  mStart, mFinish;
 
-	Bot						raceBot, demoBot;
-	Marker                  mRaceBot;
-	int						raceState; //0-nop 1-race 2-race after the winner crossed the finish line
+    Bot						raceBot, demoBot;
+    Marker                  mRaceBot;
+    int						raceState; //0-nop 1-race 2-race after the winner crossed the finish line
 	int						aiChallengeState;
-	int						abandoned;
+    int						abandoned;
 	int						abandoned2;
 
 	Vector					opponentCars = new Vector();		//TrafficTracker
@@ -139,7 +139,7 @@ public class City extends Track
 	float					nrTime2;
 	ResourceRef				nrHead1, nrHead2;
 	String					nrName1, nrName2;
-	Racer                                   pl1, pl2;
+        Racer                                   pl1, pl2;
 	NightracesData			nrData = new NightracesData();
 	int						nrLastPlaceDay = -1;
 	Vector					nrOpponents = new Vector();
@@ -158,7 +158,7 @@ public class City extends Track
 	SfxRef					speechDAYYOUWIN = new SfxRef(RID_SFX_DAY_WIN);
 	SfxRef					speechDAYYOULOOSE = new SfxRef(RID_SFX_DAY_LOOSE);
 
-	//--------police stuff---------:
+    //--------police stuff---------:
 	int						maxScouts = 2;	//egyszerre hany uldozhet
 
 	Vector					policeCars = new Vector();		//TrafficTracker
@@ -167,8 +167,8 @@ public class City extends Track
 	float					lastCollisionTime;
 	float					lastAlertTime;
 	float					firstAlertTime;	//az elso figy ideje, a fleedAway megallapitasahoz
-	float					pullOverTime;	//mikor huzodott felre?
-	int						policeState; //0-semmi 10... buntetni akar
+	float					pullOverTime;	//mikor huzodott felre? 
+    int						policeState; //0-semmi 10... buntetni akar
 	int						roamFree;	//amig 1, nem buntethet meg (buntetes utan)
 
 	//buntetes osszesito:
@@ -227,21 +227,21 @@ public class City extends Track
 		nrShowRaceFinish = 0;
 	}
 
-	public void enter( GameState prev_state )
-	{
-		if( prev_state instanceof RaceSetup)
-		{
+    public void enter( GameState prev_state )
+    {
+        if( prev_state instanceof RaceSetup)
+        {
 			Frontend.loadingScreen.show();
 			osd.show();
-		}
+ 		} 
 		else
-		{
+        {
 			//benne vagyunk, ne dobjon vissza azonnal
 			activeTrigger=-1;
 
-			abandoned=raceState=0;
+            abandoned=raceState=0;
 			aiChallengeState=0;
-			policeState=0;
+            policeState=0;
 			roamFree=0;
 
 			overSpeed=0;
@@ -254,13 +254,13 @@ public class City extends Track
 			{
 //				changeCamTarget(player.car);
 //				changeCamFollow();
-			}
+			} 
 			else
 			if( GameLogic.gameMode == GameLogic.GM_QUICKRACE )
 			{
 				createQuickRaceBot();
 				changeCamTarget2(raceBot.car);
-			}
+			} 
 			else
 			if( GameLogic.gameMode == GameLogic.GM_DEMO )
 			{
@@ -314,8 +314,8 @@ public class City extends Track
 					demoBot.createCar( map, new Vehicle(player.car) );
 */				}
 				changeCamTarget(demoBot.car);
-				changeCamTarget2(raceBot.car);
-			}
+				changeCamTarget2(raceBot.car);	
+			} 
 			else
 			{
 				float hour = GameLogic.getTime() / 3600;
@@ -361,7 +361,7 @@ public class City extends Track
 					Vector3 spacin, sideoffs, botPos;
 					Ypr oriCars;
 					RenderRef rr;
-
+					
 					//starthoz
 					alignedPos = map.alignToRoad( pS );
 					alignedPos[ 1 ].normalize();
@@ -517,16 +517,16 @@ public class City extends Track
 		new SfxRef( sound:0x0016r ).precache(); //police siren
 
 		//
-		super.enter(prev_state);	//waits for loading to finish!
+        super.enter(prev_state);	//waits for loading to finish!
 		//
 
-		if( prev_state instanceof RaceSetup)
-		{
-		}
-		else
-		{
-			setEventMask( EVENT_COLLISION );
-			addNotification( GameLogic.player.car, EVENT_COLLISION, EVENT_SAME, null );
+        if( prev_state instanceof RaceSetup)
+        {
+ 		}
+        else
+        {
+            setEventMask( EVENT_COLLISION );
+            addNotification( GameLogic.player.car, EVENT_COLLISION, EVENT_SAME, null );
 
 			if( GameLogic.gameMode == GameLogic.GM_QUICKRACE )
 			{
@@ -554,16 +554,16 @@ public class City extends Track
 
 			//if( GameLogic.gameMode == GameLogic.GM_CARREER )
 			//{
-			//if( nightTime )
-			//{
-			//if( player.checkHint(Player.H_NIGHTCITY) )
-			//new WarningDialog( player.controller, Dialog.DF_MODAL|Dialog.DF_DEFAULTBG,  "Bem-vindo a ValoCity!", "A noite, a comunidade de corridas se reune para organizar corridas de arrancada com grandes premios, ate mesmo para titulos de propriedade dos carros! \n Voce pode encontra-las no local marcado com a bandeira verde, para correr ou apenas para assistir as corridas dos outros.").display();
-			//}
-			//else
-			//{
-			//if( player.checkHint(Player.H_DAYCITY) )
-			//new WarningDialog( player.controller, Dialog.DF_MODAL|Dialog.DF_DEFAULTBG, "Bem-vindo a ValoCity!", "Encontre adversarios do seu clube para competir, por premios em dinheiro ou apenas por prestigio. \n Conheca-os para saber com quem competir nas corridas noturnas! (As corridas noturnas acontecem por volta da meia-noite) \n Cuidado com a policia, parar e frequentemente mais facil do que tentar fugir.").display();
-			//}
+				//if( nightTime )
+				//{
+					//if( player.checkHint(Player.H_NIGHTCITY) )
+						//new WarningDialog( player.controller, Dialog.DF_MODAL|Dialog.DF_DEFAULTBG,  "Bem-vindo a ValoCity!", "A noite, a comunidade de corridas se reune para organizar corridas de arrancada com grandes premios, ate mesmo para titulos de propriedade dos carros! \n Voce pode encontra-las no local marcado com a bandeira verde, para correr ou apenas para assistir as corridas dos outros.").display();
+				//}
+				//else
+				//{
+					//if( player.checkHint(Player.H_DAYCITY) )
+						//new WarningDialog( player.controller, Dialog.DF_MODAL|Dialog.DF_DEFAULTBG, "Bem-vindo a ValoCity!", "Encontre adversarios do seu clube para competir, por premios em dinheiro ou apenas por prestigio. \n Conheca-os para saber com quem competir nas corridas noturnas! (As corridas noturnas acontecem por volta da meia-noite) \n Cuidado com a policia, parar e frequentemente mais facil do que tentar fugir.").display();
+				//}
 
 			//}
 
@@ -574,7 +574,7 @@ public class City extends Track
 			Style butt0 = new Style( 0.3, 0.12, Frontend.mediumFont, Text.ALIGN_LEFT, Osd.RRT_TEST );
 
 			Menu m;
-
+			
 			m = osd.createMenu( butt0, -1.0, -0.5, 0 );
 			m.addItem( "Correr!", CMD_PARTICIPATE );
 			m.addItem( "Assistir", CMD_WATCH_RACE );
@@ -587,25 +587,25 @@ public class City extends Track
 		}
 		refreshStatus();	//ITT lehet.
 
-	}
+    }
 
-	public void exit( GameState next_state )
-	{
-		if( next_state instanceof RaceSetup)
-		{
+    public void exit( GameState next_state )
+    {
+        if( next_state instanceof RaceSetup)
+        {
 			osd.hide();
 		}
-		else
-		{
+        else
+        {       
 			int i;
-			clearEventMask( EVENT_COLLISION );
+            clearEventMask( EVENT_COLLISION );
 
 			if( raceState )
 				cleanupRace();
 
-			removeAllTimers();
+            removeAllTimers();
 
-			destroyRaceBot();
+            destroyRaceBot();
 			if (demoBot)
 			{
 				demoBot.deleteCar();
@@ -613,8 +613,8 @@ public class City extends Track
 			}
 			//flush :o)
 			if(( GameLogic.gameMode == GameLogic.GM_DEMO )
-					||( GameLogic.gameMode == GameLogic.GM_QUICKRACE )
-					||( GameLogic.gameMode == GameLogic.GM_FREERIDE ))
+			 ||( GameLogic.gameMode == GameLogic.GM_QUICKRACE )
+			 ||( GameLogic.gameMode == GameLogic.GM_FREERIDE ))
 			{
 				killCar = 1;
 /*				if (player.car)
@@ -624,7 +624,7 @@ public class City extends Track
 				}
 */			}
 
-
+	
 			for( i=alertedScouts.size()-1; i>=0; i-- )
 			{
 				PoliceScout pc = alertedScouts.removeLastElement();
@@ -651,34 +651,34 @@ public class City extends Track
 			parkingCars = null;
 			nrMen = null;
 			fakers = null;
-		}
+        }
 
-		super.exit(next_state);
-	}
+        super.exit(next_state);
+    }
 
 	public void	refreshStatus()
 	{
 		if (statusTxt)
-			if (player.car)
+		if (player.car)
+		{
+			String txt;
+			if( GameLogic.gameMode == GameLogic.GM_QUICKRACE || GameLogic.gameMode == GameLogic.GM_FREERIDE )
 			{
-				String txt;
-				if( GameLogic.gameMode == GameLogic.GM_QUICKRACE || GameLogic.gameMode == GameLogic.GM_FREERIDE )
-				{
-					txt = "";
-				}
-				else
-				{
-					int	ranking = (GameLogic.CLUBMEMBERS-(GameLogic.findRacer(player)-GameLogic.CLUBMEMBERS*player.club));
-					txt = "";
-				}
-
-				//if (config.majomParade)
-				{
-					if (player.car && player.car.chassis)
-						txt = "";
-				}
-				statusTxt.changeText( txt );
+				txt = "";
 			}
+			else
+			{
+				int	ranking = (GameLogic.CLUBMEMBERS-(GameLogic.findRacer(player)-GameLogic.CLUBMEMBERS*player.club));
+				txt = "";
+			}
+
+			//if (config.majomParade)
+			{
+				if (player.car && player.car.chassis)
+  				txt = "";
+			}
+			statusTxt.changeText( txt );
+		}
 	}
 
 	public void alertPolice()
@@ -689,12 +689,12 @@ public class City extends Track
 		if( time-lastAlertTime < 3.0 )	return;///utkozesek gyors sorozatban is hivhatnak!
 
 		lastAlertTime = time;
-		if( roamFree ) return;
+        if( roamFree ) return;
 
 		//van ures hely, vagy lokjunk vissza valakit a forgalomba aki mar nagyon lemaradt?
 
 		int	chasingScouts;
-
+		
 		float maxdst;
 		PoliceScout pc, maxpc;
 		for( int i=alertedScouts.size()-1; i>=0; i-- )
@@ -761,7 +761,7 @@ public class City extends Track
 			//setMessage( "PFound!" );
 			if( distance < 80.0 )
 			{
-				int	killTheLamest;
+				int	killTheLamest; 
 
 				//setMessage( "Pfound80free! " + chasingScouts );
 				if( chasingScouts>=maxScouts )
@@ -780,7 +780,7 @@ public class City extends Track
 
 					//kiszedjuk a rendelkeyesre allok listajabol, ne zavarkodjon ott
 					policeCars.removeElementAt(j);
-
+					
 					PoliceScout pc = new PoliceScout();
 					pc.distance = distance;
 					pc.tracker = theOne;
@@ -799,15 +799,15 @@ public class City extends Track
 		}
 	}
 
-	public void wakePoliceScout( PoliceScout pc )
-	{
+    public void wakePoliceScout( PoliceScout pc )
+    {
 		if( !policeState )
 			firstAlertTime=System.simTime();	//most kezdodik a buli!
 
-		pc.bot = new Bot( 0, 12345, 0.0+player.club*0.50 ); //0 ... 0.75
+        pc.bot = new Bot( 0, 12345, 0.0+player.club*0.50 ); //0 ... 0.75
 		pc.bot.setDriverObject( GameLogic.HUMAN_POLICEMAN );
 		//setMessage( "Pwake" );
-		pc.bot.createCar( map, new Vehicle(pc.tracker.car) );
+        pc.bot.createCar( map, new Vehicle(pc.tracker.car) );
 		pc.bot.traffic_id = pc.tracker.trafficId;		//mivel most meg a trafficben van!
 		pc.bot.imaPoliceDriver=1;
 
@@ -823,8 +823,8 @@ public class City extends Track
 			changeCamTarget2(pc.bot.car);
 	}
 
-	public void sleepPoliceScout( PoliceScout pc )
-	{
+    public void sleepPoliceScout( PoliceScout pc )
+    {
 		//setMessage( "Pgob" );
 		pc.bot.releaseHorn();
 
@@ -836,10 +836,10 @@ public class City extends Track
 		pc.returningTraffic = 1;
 		pc.bot.addNotification( pc.bot.car, EVENT_COMMAND, EVENT_SAME, null );
 		pc.bot.reJoinTraffic();
-	}
+    }
 
-	public void sleepPoliceScoutQuick( PoliceScout pc )
-	{
+    public void sleepPoliceScoutQuick( PoliceScout pc )
+    {
 		//setMessage( "Pgob-quick" );
 
 		Vector3 pos = pc.bot.car.getPos();
@@ -850,10 +850,10 @@ public class City extends Track
 		alertedScouts.removeElement(pc);
 
 		map.addTrafficP( GRT_POLICECAR, pos, 1, 2, 5, 2);
-	}
+    }
 
-	public void createQuickRaceBot()
-	{
+    public void createQuickRaceBot()
+    {
 		int characterIndex = Math.random()*59;
 		if( characterIndex+Racer.RID_FEJ == player.character.id() )
 			characterIndex++;
@@ -861,39 +861,39 @@ public class City extends Track
 		raceBot = new Bot( characterIndex, Math.random()*1234, Math.random(), 2.0, 2.0, 1.0);
 		raceBot.botVd = GameLogic.getVehicleDescriptor( VehicleType.VS_DEMO );
 
-		Vector3 pos = player.car.getPos();
-		Vector3 vel = player.car.getVel();
+        Vector3 pos = player.car.getPos();
+        Vector3 vel = player.car.getVel();
 		vel.normalize();
-		vel.mul(500.0f);
-		pos.add(vel);
-		raceBot.createCar( map );
-	}
+        vel.mul(500.0f);
+        pos.add(vel);
+        raceBot.createCar( map );
+    }
 
 
-	public void destroyRaceBot()
-	{
-		if( raceBot )
-		{
-			if( mRaceBot )	//rem day bot's marker
-			{
-				nav.remMarker( mRaceBot );
-				mRaceBot=null;
-			}
+    public void destroyRaceBot()
+    {
+        if( raceBot )
+        {
+            if( mRaceBot )	//rem day bot's marker
+            {
+                nav.remMarker( mRaceBot );
+                mRaceBot=null;
+            }
 
-			raceBot.deleteCar();
+            raceBot.deleteCar();
 			raceBot=null;
-		}
-	}
+        }
+    }
 
 
-	//prepare to the race:
-	public void startRace( Vector3 pStart, Vector3 pFinish, int moneyprize )
-	{
-		raceStart=pStart; raceFinish=pFinish;
-		prize = moneyprize;
+    //prepare to the race:
+    public void startRace( Vector3 pStart, Vector3 pFinish, int moneyprize )
+    {
+        raceStart=pStart; raceFinish=pFinish;
+        prize = moneyprize;
 
-		Vector3 startDir = map.getStartDirection( pStart, pFinish );
-		Ypr startOri = new Ypr( startDir );
+        Vector3 startDir = map.getStartDirection( pStart, pFinish );
+        Ypr startOri = new Ypr( startDir );
 
 		//1, siman forgalomban volt
 		//2, epp visszatartott oda (utkozes/verseny utan)
@@ -920,7 +920,7 @@ public class City extends Track
 			raceBot.dummycar.command( "reset" );
 			raceBot.dummycar.setMatrix( new Vector3(0.0, -10000.0, 0.0), ori );
 			raceBot.dummycar.setParent( raceBot );
-
+			
 			raceBot.createCar( map );
 			raceBot.car.command( "reset" );
 			raceBot.car.setMatrix( pos, ori );
@@ -929,19 +929,19 @@ public class City extends Track
 		else
 		{	//quickrace, pl.
 		}
-
+		
 		//nehogy elteleportalja  a forgalommal egyutt
-		raceBot.stop(); //barmit is csinalt (trafficben, ai-kent, stb.) hagyja abba, alljon meg
+        raceBot.stop(); //barmit is csinalt (trafficben, ai-kent, stb.) hagyja abba, alljon meg
 		mRaceBot = nav.addMarker( raceBot );	//add day race bot's marker
 
-		//kitakaritjuk a keresztezodest:
-		map.haltTrafficCross( raceStart, 15.0 );
+        //kitakaritjuk a keresztezodest:
+        map.haltTrafficCross( raceStart, 15.0 );
 
-		//move camera (player _IS_ participating)
-		Vector3 camPos = new Vector3( startDir );
-		camPos.mul( -7.0 );     //moge
-		camPos.y+=3; //fole
-		camPos.add( raceStart );
+        //move camera (player _IS_ participating)
+        Vector3 camPos = new Vector3( startDir );
+        camPos.mul( -7.0 );     //moge
+        camPos.y+=3; //fole
+        camPos.add( raceStart );
 		if (cam)
 		{
 			Ypr ypr = new Ypr( startOri );
@@ -949,16 +949,16 @@ public class City extends Track
 			cam.setMatrix( camPos, startOri );
 		}
 
-		Vector3 Pos_left = new Vector3( startDir );
-		Pos_left.mul( 1.75 );              //melle
-		Pos_left.rotate( new Ypr(1.57,0.0,0.0) );
-		Pos_left.add( raceStart );
-		Vector3 Pos_right = new Vector3( startDir );
-		Pos_right.mul( 1.75 );              //melle
-		Pos_right.rotate( new Ypr(-1.57,0.0,0.0) );
-		Pos_right.add( raceStart );
+        Vector3 Pos_left = new Vector3( startDir );
+        Pos_left.mul( 1.75 );              //melle
+        Pos_left.rotate( new Ypr(1.57,0.0,0.0) );
+        Pos_left.add( raceStart );
+        Vector3 Pos_right = new Vector3( startDir );
+        Pos_right.mul( 1.75 );              //melle
+        Pos_right.rotate( new Ypr(-1.57,0.0,0.0) );
+        Pos_right.add( raceStart );
 
-		//sometimes exchange left-right
+		//sometimes exchange left-right 
 		if (Math.random() > 0.5)
 		{
 			Vector3	tmp = Pos_left;
@@ -966,26 +966,26 @@ public class City extends Track
 			Pos_right = tmp;
 		}
 
-		mStart = nav.addMarker( Marker.RR_START, pStart, 3 );
-		mFinish = nav.addMarker( Marker.RR_FINISH, pFinish, 3 );
+        mStart = nav.addMarker( Marker.RR_START, pStart, 3 );
+        mFinish = nav.addMarker( Marker.RR_FINISH, pFinish, 3 );
 
-		//add finish trigger
-		trRaceFinish = new Trigger( map, null, raceFinish, "dayrace_finish_trigger" );
-		addNotification( trRaceFinish.trigger, EVENT_TRIGGER_ON, EVENT_SAME, null, "event_handlerRaceFinish" );
+        //add finish trigger
+        trRaceFinish = new Trigger( map, null, raceFinish, "dayrace_finish_trigger" );
+        addNotification( trRaceFinish.trigger, EVENT_TRIGGER_ON, EVENT_SAME, null, "event_handlerRaceFinish" );
 
-		finishObject = new RenderRef( map, frontend:0x00000070r, "finishObject" );
-		Vector3 tmp = new Vector3( raceFinish );
-		tmp.y+=3;
-		finishObject.setMatrix( tmp, null );
+        finishObject = new RenderRef( map, frontend:0x00000070r, "finishObject" );
+        Vector3 tmp = new Vector3( raceFinish );
+        tmp.y+=3;
+        finishObject.setMatrix( tmp, null );
 
-		//set player, set opponent
+        //set player, set opponent
 
 		if (raceBot)
 		{
 			raceBot.car.command( "reset" );
 			raceBot.car.setMatrix( Pos_left, startOri );
 			raceBot.car.setParent( map );	//quickrace botokhoz kell
-			raceBot.car.command( "stop" );
+			raceBot.car.command( "stop" ); 
 			raceBot.car.command( "idle" );
 			raceBot.brain.command( "AI_BeginRace 0.5" );
 		}
@@ -995,69 +995,69 @@ public class City extends Track
 			demoBot.car.command( "reset" );
 			demoBot.car.setMatrix( Pos_right, startOri );
 			demoBot.car.setParent( map );	//quickrace botokhoz kell
-			demoBot.car.command( "stop" );
+			demoBot.car.command( "stop" ); 
 			demoBot.car.command( "idle" );
 			demoBot.brain.command( "AI_BeginRace 0.5" );
 		} else
 		if (player.car)
 		{
-			player.car.command( "reset" );
-			player.car.setMatrix( Pos_right, startOri );
-			player.car.command( "stop" );
+	        player.car.command( "reset" );
+		    player.car.setMatrix( Pos_right, startOri );
+			player.car.command( "stop" ); 
 			player.car.command( "idle" );
 		}
 
-		setEventMask( EVENT_TIME ); //meg a city.enter() elott vagyunk
+        setEventMask( EVENT_TIME ); //meg a city.enter() elott vagyunk
 
-		//ha valaki beallitotta volna (pl ai csinal ilyet temp), visszaallitjuk!
-		abandoned=0;
+        //ha valaki beallitotta volna (pl ai csinal ilyet temp), visszaallitjuk!
+        abandoned=0;
 
-		addTimer( 1, 9 );
-	}
+        addTimer( 1, 9 );
+    }
 
-	//visszaszamlalas vege, start:
-	public void startRace2()
-	{
+    //visszaszamlalas vege, start:
+    public void startRace2()
+    {
 		if (player.car)
 		{
 			player.car.setCruiseControl(0);
-			player.car.command( "start" );
+			player.car.command( "start" ); 
 		}
 		if (raceBot)
 		{
 			if (demoBot)
 			{
-				raceBot.car.command( "start" );
-				demoBot.car.command( "start" );
+				raceBot.car.command( "start" ); 
+				demoBot.car.command( "start" ); 
 				raceBot.startRace( raceFinish, demoBot );
 				demoBot.startRace( raceFinish, raceBot );
 			} else
 			{
-				raceBot.car.command( "start" );
+				raceBot.car.command( "start" ); 
 				raceBot.startRace( raceFinish, player );
 			}
 		}
 
-		if(	GameLogic.klampiPatch >= 2)
-		{
-			if(	GameLogic.klampiPatch >= 3)
+        if(	GameLogic.klampiPatch >= 2)
+        {
+	        if(	GameLogic.klampiPatch >= 3)
 			{
 				player.controller.command( "viewport 0" );
 				player.controller.command( "osd 0" );
 			}
 
-			raceBot.brain.command( "camera " + cam.id() );
+            raceBot.brain.command( "camera " + cam.id() );
 
-			if(	GameLogic.klampiPatch >= 3)
+	        if(	GameLogic.klampiPatch >= 3)
 			{
 				if ( osdEnabled )
 					raceBot.brain.command( "osd " + osd.id() );
 				raceBot.brain.command( "viewport " + osd.getViewport().id() );
 			}
-		}
+        }
 
-		Sound.changeMusicSet( Sound.MUSIC_SET_RACE );
-	}
+        Sound.changeMusicSet( Sound.MUSIC_SET_RACE );
+    }
 
 	public void lookBot( Bot bot, int init )
 	{
@@ -1071,7 +1071,7 @@ public class City extends Track
 			changeCamTarget(bot.car);
 //			changeCamFollow();
 			changeCamChase();
-		}
+		} 
 		else
 		{//bugzik, meg nem jo!!! (cameraTarget, stb. )
 			changeCamNone();
@@ -1488,16 +1488,16 @@ public class City extends Track
 
 			nrPrizeList = new int[n];
 
-			float pstrippenalty = 1.0;
-			if (player.car && player.car.chassis)
-				pstrippenalty -= player.car.chassis.C_drag;
+                        float pstrippenalty = 1.0;
+                        if (player.car && player.car.chassis)
+                           pstrippenalty -= player.car.chassis.C_drag;
 
-			pstrippenalty *= pstrippenalty;
+				pstrippenalty *= pstrippenalty;
 
 			for( int i = 0; i < n; i++ )
 			{
 				botID[i] = nrOpponents.elementAt(i).intValue();
-				Bot b = (Bot)GameLogic.speedymen[botID[i]];
+                                Bot b = (Bot)GameLogic.speedymen[botID[i]];
 				pict[i] = b.character;
 				int rank = GameLogic.CLUBMEMBERS-(botID[i]%GameLogic.CLUBMEMBERS);	// hanyadik a rangsorban
 
@@ -1620,8 +1620,8 @@ public class City extends Track
 				enableOsd( 0 );
 		}
 
-		pl1 = null;
-		pl2 = null;
+    pl1 = null;
+    pl2 = null;
 
 		//mi is versenyzunk?
 		if( nrPlayerRace )	//biztos, hogy (nrWatching==0)
@@ -1630,7 +1630,7 @@ public class City extends Track
 			{	//nem mert, cancelt nyomott a user!
 
 				nrWatching = backupnrWatching;
-				Input.cursor.enable(1);
+				Input.cursor.enable(1);	
 				if( nrWatching )
 				{	//watchbol nyomtunk participate-et
 					osd.showGroup( nrWatchingGroup );
@@ -1652,8 +1652,8 @@ public class City extends Track
 			nrName1 = GameLogic.speedymen[nrBotID1].name;
 			nrName2 = player.name;
 
-			pl1 = GameLogic.speedymen[nrBotID1];
-			pl2 = player;
+                        pl1 = GameLogic.speedymen[nrBotID1];
+                        pl2 = player;
 		}
 		else
 		{
@@ -1682,8 +1682,8 @@ public class City extends Track
 			nrName1 = GameLogic.speedymen[nrBotID1].name;
 			nrName2 = GameLogic.speedymen[nrBotID2].name;
 
-			pl1 = GameLogic.speedymen[nrBotID1];
-			pl2 = GameLogic.speedymen[nrBotID2];
+                        pl1 = GameLogic.speedymen[nrBotID1];
+                        pl2 = GameLogic.speedymen[nrBotID2];
 		}
 
 
@@ -1744,7 +1744,7 @@ public class City extends Track
 		}
 
 
-		//racers
+		//racers		
 		botPos = new Vector3( alignedPos[ 0 ] );
 
 		tmp = new Vector3( alignedPos[ 1 ] );
@@ -1765,8 +1765,8 @@ public class City extends Track
 			//nem a 'nappali' kocsijaval all ki!
 			int	botIndex = GameLogic.findRacer( nrBot1 );
 			Vehicle nightVhc = new Vehicle( this, nrBot1.nightVd.id,  nrBot1.nightVd.colorIndex, nrBot1.nightVd.optical, nrBot1.nightVd.power, nrBot1.nightVd.wear, nrBot1.nightVd.tear );
-			nightVhc.races_won = nrBot1.nightWins;
-			nightVhc.races_lost = nrBot1.nightLoses;
+                        nightVhc.races_won = nrBot1.nightWins;
+                        nightVhc.races_lost = nrBot1.nightLoses;
 
 			nrBot1.createCar( map, nightVhc );
 
@@ -1868,7 +1868,7 @@ public class City extends Track
 					cam.command( "dist 5.5 6.5");
 				}
 				nrDelay = 7;
-			}
+			} 
 			else
 			{
 				Input.cursor.enable(1);
@@ -1892,8 +1892,8 @@ public class City extends Track
 		}
 	}
 
-	public void startNightRace2()
-	{
+    public void startNightRace2()
+    {
 		nrFinished1 = 0;
 		nrFinished2 = 0;
 
@@ -1911,10 +1911,10 @@ public class City extends Track
 			nrBot1.startRace( pF, player );
 			nrBot1.brain.command( "AI_NightRace" );
 			player.car.setCruiseControl(0);
-			player.car.command( "start" );
+			player.car.command( "start" ); 
 			cam.command( "angle 0 0" );
 			cam.command( "dist 8.0 16.0");
-		}
+		} 
 		else
 		{
 			nrBot1.car.command( "start" );
@@ -1931,7 +1931,7 @@ public class City extends Track
 		Sound.changeMusicSet( Sound.MUSIC_SET_RACE );
 	}
 
-	public void finishNightRace()
+    public void finishNightRace()
 	{
 		nrStat = NR_INVALID;
 
@@ -1946,8 +1946,8 @@ public class City extends Track
 				background = RID_NRFIN_WIN;
 			else
 				background = RID_NRFIN_LOSE;
-		}
-		else
+		} 
+		else 
 		{
 			background = RID_NRFIN_AI;
 		}
@@ -1980,25 +1980,25 @@ public class City extends Track
 			player.car.setParent( map );
 			player.car.setMatrix( Pos, Ori );
 			player.car.command( "idle" );
-		}
+		} 
 
 		if( nrPlayerRace == 2 )
 		{
 			if (nrBot1.bestNightQM == 0.0 || nrTime1 < nrBot1.bestNightQM)
-				nrBot1.bestNightQM = nrTime1;
+				 nrBot1.bestNightQM = nrTime1;
 
 			if( nrTime2 < nrTime1 )
 			{
 				if (player.car.bestNightQM == 0.0 || nrTime2 < player.car.bestNightQM)
 					player.car.bestNightQM = nrTime2;
-
+				
 				//player won
 				speechYOUWIN.play();
 
 				player.car.races_won++;
 				player.races_won++;
-				nrBot1.nightLoses++;
-				nrBot1.car.races_lost++;
+                                nrBot1.nightLoses++;
+                                nrBot1.car.races_lost++;
 
 				//csak hogy legyen valami eletszaga... (mert egyebkent most a semmibol hoztuk letre..)
 //				nrBot1.car.races_lost = 1+Math.random()*nrBot1.fileid*(1.0-nrBot1.aiLevel);
@@ -2030,8 +2030,8 @@ public class City extends Track
 				//player lose
 				player.car.races_lost++;
 				player.races_lost++;
-				nrBot1.nightWins++;
-				nrBot1.car.races_won++;
+                                nrBot1.nightWins++;
+                                nrBot1.car.races_won++;
 
 				if( nrPrize > 0 )
 				{
@@ -2046,7 +2046,7 @@ public class City extends Track
 			// (vagy leallitjuk a fizikat MOST, es a dialogus alatt szepen letesszuk az ut szelere, hogy ne torje ossze magat,
 			// vagy csak beallitunk egy flag-et, hogy majd ha magatol megallt, dobjuk be a dialogust.)
 
-			GameLogic.challenge( GameLogic.findRacer(player), GameLogic.findRacer(nrBot1), 0, (nrTime2 < nrTime1), 1 );
+		    GameLogic.challenge( GameLogic.findRacer(player), GameLogic.findRacer(nrBot1), 0, (nrTime2 < nrTime1), 1 );
 			refreshStatus();	//ITT is lehet.
 
 		}
@@ -2083,7 +2083,7 @@ public class City extends Track
 			{
 				player.controller.command( "camera " + cam.id() );
 				restoreCamera();
-			}
+			} 
 			else
 			{
 				enableOsd( 1 );
@@ -2111,11 +2111,11 @@ public class City extends Track
 		{
 			nrBot1.deleteCar();
 
-			if( mRaceBot )
-			{
-				nav.remMarker( mRaceBot );	//rem night opponent bot's marker
-				mRaceBot=null;
-			}
+            if( mRaceBot )
+            {
+                nav.remMarker( mRaceBot );	//rem night opponent bot's marker
+                mRaceBot=null;
+            }
 		}
 		if( nrBot2 )
 			nrBot2.deleteCar();
@@ -2156,10 +2156,10 @@ public class City extends Track
 			speech3.play();
 
 			if( nrBot1 )
-				nrBot1.brain.command( "AI_BeginRace 0.5" );
+	            nrBot1.brain.command( "AI_BeginRace 0.5" );
 			if( nrBot2 )
-				nrBot2.brain.command( "AI_BeginRace 0.5" );
-
+	            nrBot2.brain.command( "AI_BeginRace 0.5" );
+			
 			nrStat = NR_2;
 			nrDelay = 0;
 		}
@@ -2171,7 +2171,7 @@ public class City extends Track
 
 			nrStarterLadyAnim.setSpeed( 2.0 );
 			nrStarterLadyAnim.play();
-
+			
 			nrStat = NR_1;
 			nrDelay = 0;
 		}
@@ -2182,9 +2182,9 @@ public class City extends Track
 			speech1.play();
 
 			if( nrBot1 )
-				nrBot1.brain.command( "AI_BeginRace 1.0" );
+	            nrBot1.brain.command( "AI_BeginRace 1.0" );
 			if( nrBot2 )
-				nrBot2.brain.command( "AI_BeginRace 1.0" );
+	            nrBot2.brain.command( "AI_BeginRace 1.0" );
 
 			nrStat = NR_START;
 			nrDelay = 0;
@@ -2208,7 +2208,7 @@ public class City extends Track
 
 			if (nrPlayerPaused && !nrWatching )
 			{
-				player.car.command( "start" );
+				player.car.command( "start" ); 
 				nrPlayerPaused = 0;
 			}
 
@@ -2254,9 +2254,9 @@ public class City extends Track
 		}
 	}
 
-	//ha valaki a cel kozelebe ert
-	public void event_handlerNrFinishSound( GameRef obj_ref, int event, String param )
-	{
+    //ha valaki a cel kozelebe ert
+    public void event_handlerNrFinishSound( GameRef obj_ref, int event, String param )
+    {
 		int	id = param.token(0).intValue();
 
 		if( event == EVENT_TRIGGER_ON )
@@ -2293,9 +2293,9 @@ public class City extends Track
 		}
 	}
 
-	//ha valaki beert a celba
-	public void event_handlerNrFinish( GameRef obj_ref, int event, String param )
-	{
+    //ha valaki beert a celba
+    public void event_handlerNrFinish( GameRef obj_ref, int event, String param )
+    {
 		int	id = param.token(0).intValue();
 
 		if( event == EVENT_TRIGGER_ON )
@@ -2378,10 +2378,10 @@ public class City extends Track
 	}
 
 	//user versenyezni akar?
-	public void event_handlerNrStart( GameRef obj_ref, int event, String param )
-	{
+    public void event_handlerNrStart( GameRef obj_ref, int event, String param )
+    {
 		int	id = param.token(0).intValue();
-
+		
 		if( event == EVENT_TRIGGER_ON )
 		{
 			if ( id == player.car.id() )
@@ -2409,11 +2409,11 @@ public class City extends Track
 						}
 
 						restoreCamera();
-
+			
 						osd.hideGroup( nrWatchingGroup );
 						nrWatching = 0;
 						enableOsd( 1 );
-					}
+					} 
 					else
 					{
 						osd.hideGroup( nightRaceGroup );
@@ -2456,62 +2456,62 @@ public class City extends Track
 		}
 	}
 
-	public void event_handlerRaceFinish( GameRef obj_ref, int event, String param )
-	{
+    public void event_handlerRaceFinish( GameRef obj_ref, int event, String param )
+    {
 		if( raceState == 1)
 		{
-			int	id = param.token(0).intValue();
-			int	rank;   //player hanyadik lett
+            int	id = param.token(0).intValue();
+            int	rank;   //player hanyadik lett
 
-			if (id == player.car.id())
-				rank=1;
+            if (id == player.car.id())
+                    rank=1;
+            else
+            if (id == raceBot.car.id())
+                    rank=2;
 			else
-			if (id == raceBot.car.id())
-				rank=2;
-			else
-			if (demoBot && (id == demoBot.car.id()))
-				rank=1;
+            if (demoBot && (id == demoBot.car.id()))
+                    rank=1;
 
-			if( rank )      //a ket versenyzo kozul ert be valaki?
-			{
+            if( rank )      //a ket versenyzo kozul ert be valaki?
+            {
 				raceState = 2;
 
-				//ToDo: brake, slow motion, timer, chase camera
+			//ToDo: brake, slow motion, timer, chase camera
 
 //ALWAYS FROM NOW				if ( GameLogic.gameMode == GameLogic.GM_DEMO )
 //				{
-				System.timeWarp( 0.1 );
-				addTimer( 0.1*10.0, 14 );
-				if (player && (id == player.car.id()))
-				{
-					player.car.command( "brake" );
-					changeCamTarget(player.car);
-					changeCamTarget2(raceBot.car);
-				} else
-				if (demoBot && (id == demoBot.car.id()))
-				{
-					demoBot.car.command( "brake" );
-					demoBot.stop();
-					changeCamTarget(demoBot.car);
-					changeCamTarget2(raceBot.car);
-				} else
-				if (raceBot && (id == raceBot.car.id()))
-				{
-					raceBot.car.command( "brake" );
-					raceBot.stop();
-					changeCamTarget(raceBot.car);
-					if (demoBot && demoBot.car)
-						changeCamTarget2(demoBot.car);
-					else
-					if (player.car)
-						changeCamTarget2(player.car);
-				}
-				changeCamNone();
-				lastCamPos = obj_ref.getPos();
-				lastCamPos.y += 2.0f;
-				changeCamChase();
-				if (cam)
-					cam.command( "simulate 1" );
+					System.timeWarp( 0.1 );
+					addTimer( 0.1*10.0, 14 );
+					if (player && (id == player.car.id()))
+					{
+						player.car.command( "brake" );
+						changeCamTarget(player.car);
+						changeCamTarget2(raceBot.car);	
+					} else
+					if (demoBot && (id == demoBot.car.id()))
+					{
+						demoBot.car.command( "brake" );
+						demoBot.stop();
+						changeCamTarget(demoBot.car);
+						changeCamTarget2(raceBot.car);	
+					} else
+					if (raceBot && (id == raceBot.car.id()))
+					{
+						raceBot.car.command( "brake" );
+						raceBot.stop();
+						changeCamTarget(raceBot.car);	
+						if (demoBot && demoBot.car)
+							changeCamTarget2(demoBot.car);
+						else
+						if (player.car)
+							changeCamTarget2(player.car);
+					}
+					changeCamNone();
+					lastCamPos = obj_ref.getPos();
+					lastCamPos.y += 2.0f;
+					changeCamChase();
+					if (cam)
+						cam.command( "simulate 1" );
 
 //					cleanupRace();
 //					GameLogic.changeActiveSection( parentState );
@@ -2597,7 +2597,7 @@ public class City extends Track
 				}
 */			}
 		}
-	}
+    }
 
 	public void startQuickRace()
 	{
@@ -2623,54 +2623,54 @@ public class City extends Track
 	//called by racefinish, or exit()
 	public void cleanupRace()
 	{
-		abandoned=1;	//sorozatos ujrakihivasok elkerulesere
+        abandoned=1;	//sorozatos ujrakihivasok elkerulesere
 
 //		System.log("cleanuprace");
 
 		if (!raceState) return;
-		raceState=0;
+        raceState=0;
 
 		if (raceBot)
-			if (raceBot.dummycar)
-			{
-				if (raceBot.dummycar.id() != raceBot.car.id())
-				{//ToDo: delete real racecar, unhide dummycar, move it to racecar's pos
-					Vector3	pos = raceBot.car.getPos();
-					Ypr		ori = raceBot.car.getOri();
+		if (raceBot.dummycar)
+		{
+			if (raceBot.dummycar.id() != raceBot.car.id())
+			{//ToDo: delete real racecar, unhide dummycar, move it to racecar's pos
+				Vector3	pos = raceBot.car.getPos();
+				Ypr		ori = raceBot.car.getOri();
 
-					raceBot.deleteCar();//destroy racecar, brain, everything
+				raceBot.deleteCar();//destroy racecar, brain, everything
 
-					raceBot.dummycar.command( "reset" );
-					raceBot.dummycar.setMatrix( pos, ori );
-					raceBot.dummycar.setParent( map );
+				raceBot.dummycar.command( "reset" );
+				raceBot.dummycar.setMatrix( pos, ori );
+				raceBot.dummycar.setParent( map );
 
+				
+				//raceBot.createCar( map, new Vehicle(raceBot.dummycar) );	//!Vehicle lett a gamerefbol! gc!!
 
-					//raceBot.createCar( map, new Vehicle(raceBot.dummycar) );	//!Vehicle lett a gamerefbol! gc!!
+				raceBot.car = new Vehicle(raceBot.dummycar);
+				//enterCar( car ); lassu!
+				raceBot.brain = new GameRef( map, sl:0x0000006Er, "", "BOTBRAIN");
+		        RenderRef render = new RenderRef( map, raceBot.driverID, "botfigura-afterrace" );
+				raceBot.brain.command( "renderinstance " + render.id() );
 
-					raceBot.car = new Vehicle(raceBot.dummycar);
-					//enterCar( car ); lassu!
-					raceBot.brain = new GameRef( map, sl:0x0000006Er, "", "BOTBRAIN");
-					RenderRef render = new RenderRef( map, raceBot.driverID, "botfigura-afterrace" );
-					raceBot.brain.command( "renderinstance " + render.id() );
+				raceBot.brain.command( "controllable " + raceBot.dummycar.id() );
 
-					raceBot.brain.command( "controllable " + raceBot.dummycar.id() );
-
-					raceBot.traffic_id = 0;
-				}
-
-				if( mRaceBot )
-				{
-					nav.remMarker( mRaceBot );	//rem day bot's _real_ car's marker
-					mRaceBot=null;
-				}
-
-				raceBot.reJoinTraffic();
-				raceBot.setTrafficBehaviour( GameRef.TC_ACTIVE );      //huzzon el, hogy ujrageneralodhasson
+				raceBot.traffic_id = 0;
 			}
-			else
+
+			if( mRaceBot )
 			{
-				destroyRaceBot();
+                nav.remMarker( mRaceBot );	//rem day bot's _real_ car's marker
+                mRaceBot=null;
 			}
+
+	        raceBot.reJoinTraffic();
+		    raceBot.setTrafficBehaviour( GameRef.TC_ACTIVE );      //huzzon el, hogy ujrageneralodhasson
+		}
+		else
+		{
+			destroyRaceBot();
+		}
 
 		if (trRaceFinish)
 		{
@@ -2678,33 +2678,33 @@ public class City extends Track
 			trRaceFinish = null;
 		}
 
-		nav.remMarker( mStart );
-		nav.remMarker( mFinish );
+        nav.remMarker( mStart );
+        nav.remMarker( mFinish );
 		if (nav.route)
 		{
 			nav.route.destroy();
 			nav.route = null;
 		}
 
-		finishObject.destroy();
+        finishObject.destroy();
 
 		//megallitjuk a kocsijat
 		//nem jo, mert ha utkozott (lampaoszlop) es felcsapodott a levegobe, odafagy a resetelees miatt!
-		//player.car.command( "reset" );
+        //player.car.command( "reset" );
 
 
 		//utana ugyis a garazsba kerul! (ha ingame-menu hivta)
 		//Sound.changeMusicSet( Sound.MUSIC_SET_DRIVING );
 	}
 
-	//a race setup hivja, ha nem merunk kiallni
-	public void abandonRace()
-	{
-		GameLogic.challenge( GameLogic.findRacer(challenger), GameLogic.findRacer(challenged), 1, 0, 0 );
+    //a race setup hivja, ha nem merunk kiallni
+    public void abandonRace()
+    {
+        GameLogic.challenge( GameLogic.findRacer(challenger), GameLogic.findRacer(challenged), 1, 0, 0 );
 		refreshStatus();	//ITT is lehet.
-		raceState=0;
-		raceBot.setTrafficBehaviour( GameRef.TC_ACTIVE );      //huzzon el, hogy ujrageneralodhasson
-		abandoned=1;
+        raceState=0;
+        raceBot.setTrafficBehaviour( GameRef.TC_ACTIVE );      //huzzon el, hogy ujrageneralodhasson
+        abandoned=1;
 
 		if (nav.route)
 		{
@@ -2712,7 +2712,7 @@ public class City extends Track
 			nav.route = null;
 		}
 
-	}
+    }
 
 	public void backupCamera()	//before watch/participate night race
 	{
@@ -2773,7 +2773,7 @@ public class City extends Track
 		if( fleedAway )
 		{
 			float	tm;
-
+			
 			if( pullOverTime )
 				tm = pullOverTime;
 			else
@@ -2801,78 +2801,187 @@ public class City extends Track
 
 		return fine;
 	}
-
+    
 	int timeLock;
 
 	public void handleEvent( GameRef obj_ref, int event, int param )
-	{
-		super.handleEvent( obj_ref, event, param );
+    {
+        super.handleEvent( obj_ref, event, param );
 
-		if( event == EVENT_TIME )
-		{
+        if( event == EVENT_TIME )
+        {
 			switch( param )
 			{
-				case 2:
-					if( timeLock )
-					{
+			case 2:
+				if( timeLock )
+				{
 //					System.log( "skipping dangerous timer event..." );
-					}
-					else
+				}
+				else
+				{
+					timeLock = 1;
+
+					time++;
+
+					//if( (time % 10 == 0) && collision )
+					//{
+					//	collision = 0;
+					//	refreshStatus();
+					//}
+
+					//globalis, jol atgondolt megoldas szukseges:
+					//ha pl a user az ingame-menube ugrik, hogyan pauseoljuk le a jatekot, a timereket?!?!
+					if( GameLogic.actualState == this )
 					{
-						timeLock = 1;
-
-						time++;
-
-						//if( (time % 10 == 0) && collision )
-						//{
-						//	collision = 0;
-						//	refreshStatus();
-						//}
-
-						//globalis, jol atgondolt megoldas szukseges:
-						//ha pl a user az ingame-menube ugrik, hogyan pauseoljuk le a jatekot, a timereket?!?!
-						if( GameLogic.actualState == this )
+						if( nightTime )
 						{
-							if( nightTime )
-							{
-								nightRaceStep();
+							nightRaceStep();
 
-								if( nrQuit )	//patch, ha kileptunk mar (kocsit vesztettunk), semmi keresnivalonk itt!
+							if( nrQuit )	//patch, ha kileptunk mar (kocsit vesztettunk), semmi keresnivalonk itt!
+							{
+								timeLock = 0;
+								break;
+							}
+						}
+
+						float playerSpeedSq = player.car.getSpeedSquare();
+						int	actScout;
+
+						if(  policeState || playerSpeedSq > SPEED_LIMIT_SQ )
+						{
+							alertPolice();	//try to alert a police scout
+						}
+
+						for( int i=alertedScouts.size()-1; i>=0; i-- )
+						{
+							PoliceScout pc = alertedScouts.elementAt( i );
+
+							if( pc.returningTraffic )
+							{
+								if( pc.bot.traffic_id )
 								{
-									timeLock = 0;
-									break;
+									//mivel 1 masodpercenkent vizsgaljuk, hogy visszament-e, lehet, hogy
+									//azota mar torlodott is.. ezt azonban majd az alertpolice vizsgalja!
+									alertedScouts.removeElementAt(i);
+									//pc.bot.leaveCar(1);
+									policeCars.addElement( pc.tracker );
+									//setMessage( "Pleft" );
+
+									//TODO: ha x ideig nem ert vissza, es nem is lathato, toroljuk!
+									//NEED: support a lathatosag lekerdezesehez!
+								}
+								else
+								{
+									//lehet, hogy valahol fejreall, stb: szenved, es nem tud viszamenni!
+									Vector3 v = pc.bot.car.getPos();
+									v.sub( player.car.getPos());
+									float distance = v.length();
+									if( distance > 600 )
+									{
+										sleepPoliceScoutQuick( pc );
+									}
 								}
 							}
-
-							float playerSpeedSq = player.car.getSpeedSquare();
-							int	actScout;
-
-							if(  policeState || playerSpeedSq > SPEED_LIMIT_SQ )
+							else
 							{
-								alertPolice();	//try to alert a police scout
-							}
+								if( !pc.bot.car.id() )
+									System.exit( "s elhulltanak legjobbjaink a hosszu harc alatt: " + Integer.toHexString(pc.bot.debugid) + "\n" );
+								pc.distance = map.getRouteLength( pc.bot.car.getPos(), player.car.getPos() );
+								
+								actScout++;
 
-							for( int i=alertedScouts.size()-1; i>=0; i-- )
-							{
-								PoliceScout pc = alertedScouts.elementAt( i );
-
-								if( pc.returningTraffic )
+								if( pc.distance >= 0)	//oda tud menni?
 								{
-									if( pc.bot.traffic_id )
+									//messzebbrol nem erzekeli a pontos sebesseget
+									if( pc.distance < 300.0 )
 									{
-										//mivel 1 masodpercenkent vizsgaljuk, hogy visszament-e, lehet, hogy
-										//azota mar torlodott is.. ezt azonban majd az alertpolice vizsgalja!
-										alertedScouts.removeElementAt(i);
-										//pc.bot.leaveCar(1);
-										policeCars.addElement( pc.tracker );
-										//setMessage( "Pleft" );
+										float maxSpeed = player.car.hasCrime()*1.1;
+										if( maxSpeed >= 0 )
+										{
+											maxSpeed = Math.sqrt(playerSpeedSq)-maxSpeed;
+											if( maxSpeed > overSpeed )
+												overSpeed = maxSpeed;
+										}
+									}
 
-										//TODO: ha x ideig nem ert vissza, es nem is lathato, toroljuk!
-										//NEED: support a lathatosag lekerdezesehez!
+									if( fleedAway )
+									{
+										if( !pullOverTime )
+										{
+											if( playerSpeedSq < TINY_SPEED_SQ )
+												pullOverTime = System.simTime();
+										}
+										else
+										{
+											//ujra elindult a barom
+											if( playerSpeedSq >= TINY_SPEED_SQ )
+												pullOverTime = 0.0;
+										}
 									}
 									else
+									if( playerSpeedSq >= TINY_SPEED_SQ )
 									{
-										//lehet, hogy valahol fejreall, stb: szenved, es nem tud viszamenni!
+										//tobb mint 10 masodperce nem allt meg...
+										if( System.simTime() - firstAlertTime > 10.0 )
+										{
+											fleedAway=1;
+											pullOverTime = 0.0;
+										}
+									}
+
+									if( pc.distance < 10.0 )
+									{
+										if( playerSpeedSq < TINY_SPEED_SQ )
+										{
+											if( pc.bot.car.getSpeedSquare() < TINY_SPEED_SQ )
+											{
+												policeState=0;
+												roamFree=1;
+												addTimer( 5, 13 );	//roamfree timeout
+
+												if ( GameLogic.gameMode != GameLogic.GM_DEMO )
+												{
+													int[] fine = calculateFineSum( 1 );
+
+													int osdState = osdEnabled;
+													enableOsd( 0 );
+													//ControlSetState	css=player.controller.reset();
+													//player.controller.activateState( ControlSet.MENUSET );
+													Frontend.loadingScreen.display( new FineDialog( player.controller, Dialog.DF_MODAL|Dialog.DF_FREEZE|Dialog.DF_FULLSCREEN, player.name, fine ), 5.0 );
+													//player.controller.reset( css );
+													enableOsd( 1 );
+
+													//megbuntetjuk, de nem engedjuk negativba!
+													player.money -= fine[0];
+													if( player.money < 0 )
+														player.money = 0;
+
+													player.decreasePrestige(Racer.PRESTIGE_STEP);
+													refreshStatus();	//ITT is lehet.
+												}
+
+												//sleep all scouts and abort iteration now!
+												for( int i=alertedScouts.size()-1; i>=0; i-- )
+												{
+													PoliceScout pc = alertedScouts.elementAt( i );
+													sleepPoliceScout( pc );
+												}
+												break;
+											}
+										}
+									}
+									else
+									if( pc.distance < 100.0 )
+									{       //utolerte?
+										////tamas-shot-pecs!
+										if ( GameLogic.gameMode != GameLogic.GM_DEMO )
+											if( policeState==10 )
+												setMessage( "Policia: Encosta Vagabundo!" );
+									}
+									else	//police get lost distance! sync with initial value!
+									if ( pc.distance > 400.0+100.0*player.club )
+									{
+										//itt igazabol a lathatosagat (is) kellene teszteni
 										Vector3 v = pc.bot.car.getPos();
 										v.sub( player.car.getPos());
 										float distance = v.length();
@@ -2880,452 +2989,343 @@ public class City extends Track
 										{
 											sleepPoliceScoutQuick( pc );
 										}
+										else
+											sleepPoliceScout( pc );
+									}
+								}
+							}
+						}
+
+						if( policeState && !actScout )
+						{
+							//setMessage( "PS: " + policeState );
+							if( !(--policeState) )	//lassan elfelejtik buneinket
+							{
+								setMessage("Fuga!");
+								player.increasePrestige(2*Racer.PRESTIGE_STEP);
+								calculateFineSum(1);	//nullaz; ennyit kellett volna fizetnunk!
+								refreshStatus();	//ITT is lehet.
+							}
+						}
+
+						if( !raceState )
+						if(( GameLogic.gameMode == GameLogic.GM_CARREER ) && ( GameLogic.carrerInProgress ))
+						{//find _nearest_ opponent
+							TrafficTracker nearest_tt = null;
+							float	racerDistance = 100000.0;
+
+							for( int i=opponentCars.size()-1; i>=0; i-- )
+							{
+								TrafficTracker tt = opponentCars.elementAt(i);
+								GameRef pc = tt.car;
+
+								if( pc.id() )
+								{
+									Vector3 v = pc.getPos();
+									v.sub( player.car.getPos());
+									float distance = v.length();
+									if (distance < racerDistance)
+									{
+										racerDistance = distance;
+										nearest_tt = tt;
 									}
 								}
 								else
-								{
-									if( !pc.bot.car.id() )
-										System.exit( "s elhulltanak legjobbjaink a hosszu harc alatt: " + Integer.toHexString(pc.bot.debugid) + "\n" );
-									pc.distance = map.getRouteLength( pc.bot.car.getPos(), player.car.getPos() );
-
-									actScout++;
-
-									if( pc.distance >= 0)	//oda tud menni?
-									{
-										//messzebbrol nem erzekeli a pontos sebesseget
-										if( pc.distance < 300.0 )
-										{
-											float maxSpeed = player.car.hasCrime()*1.1;
-											if( maxSpeed >= 0 )
-											{
-												maxSpeed = Math.sqrt(playerSpeedSq)-maxSpeed;
-												if( maxSpeed > overSpeed )
-													overSpeed = maxSpeed;
-											}
-										}
-
-										if( fleedAway )
-										{
-											if( !pullOverTime )
-											{
-												if( playerSpeedSq < TINY_SPEED_SQ )
-													pullOverTime = System.simTime();
-											}
-											else
-											{
-												//ujra elindult a barom
-												if( playerSpeedSq >= TINY_SPEED_SQ )
-													pullOverTime = 0.0;
-											}
-										}
-										else
-										if( playerSpeedSq >= TINY_SPEED_SQ )
-										{
-											//tobb mint 10 masodperce nem allt meg...
-											if( System.simTime() - firstAlertTime > 10.0 )
-											{
-												fleedAway=1;
-												pullOverTime = 0.0;
-											}
-										}
-
-										if( pc.distance < 10.0 )
-										{
-											if( playerSpeedSq < TINY_SPEED_SQ )
-											{
-												if( pc.bot.car.getSpeedSquare() < TINY_SPEED_SQ )
-												{
-													policeState=0;
-													roamFree=1;
-													addTimer( 5, 13 );	//roamfree timeout
-
-													if ( GameLogic.gameMode != GameLogic.GM_DEMO )
-													{
-														int[] fine = calculateFineSum( 1 );
-
-														int osdState = osdEnabled;
-														enableOsd( 0 );
-														//ControlSetState	css=player.controller.reset();
-														//player.controller.activateState( ControlSet.MENUSET );
-														Frontend.loadingScreen.display( new FineDialog( player.controller, Dialog.DF_MODAL|Dialog.DF_FREEZE|Dialog.DF_FULLSCREEN, player.name, fine ), 5.0 );
-														//player.controller.reset( css );
-														enableOsd( 1 );
-
-														//megbuntetjuk, de nem engedjuk negativba!
-														player.money -= fine[0];
-														if( player.money < 0 )
-															player.money = 0;
-
-														player.decreasePrestige(Racer.PRESTIGE_STEP);
-														refreshStatus();	//ITT is lehet.
-													}
-
-													//sleep all scouts and abort iteration now!
-													for( int i=alertedScouts.size()-1; i>=0; i-- )
-													{
-														PoliceScout pc = alertedScouts.elementAt( i );
-														sleepPoliceScout( pc );
-													}
-													break;
-												}
-											}
-										}
-										else
-										if( pc.distance < 100.0 )
-										{       //utolerte?
-											////tamas-shot-pecs!
-											if ( GameLogic.gameMode != GameLogic.GM_DEMO )
-												if( policeState==10 )
-													setMessage( "Policia: Encosta Vagabundo!" );
-										}
-										else	//police get lost distance! sync with initial value!
-											if ( pc.distance > 400.0+100.0*player.club )
-											{
-												//itt igazabol a lathatosagat (is) kellene teszteni
-												Vector3 v = pc.bot.car.getPos();
-												v.sub( player.car.getPos());
-												float distance = v.length();
-												if( distance > 600 )
-												{
-													sleepPoliceScoutQuick( pc );
-												}
-												else
-													sleepPoliceScout( pc );
-											}
-									}
-								}
-							}
-
-							if( policeState && !actScout )
-							{
-								//setMessage( "PS: " + policeState );
-								if( !(--policeState) )	//lassan elfelejtik buneinket
-								{
-									setMessage("Fuga!");
-									player.increasePrestige(2*Racer.PRESTIGE_STEP);
-									calculateFineSum(1);	//nullaz; ennyit kellett volna fizetnunk!
-									refreshStatus();	//ITT is lehet.
-								}
-							}
-
-							if( !raceState )
-								if(( GameLogic.gameMode == GameLogic.GM_CARREER ) && ( GameLogic.carrerInProgress ))
-								{//find _nearest_ opponent
-									TrafficTracker nearest_tt = null;
-									float	racerDistance = 100000.0;
-
-									for( int i=opponentCars.size()-1; i>=0; i-- )
-									{
-										TrafficTracker tt = opponentCars.elementAt(i);
-										GameRef pc = tt.car;
-
-										if( pc.id() )
-										{
-											Vector3 v = pc.getPos();
-											v.sub( player.car.getPos());
-											float distance = v.length();
-											if (distance < racerDistance)
-											{
-												racerDistance = distance;
-												nearest_tt = tt;
-											}
-										}
-										else
-										{	//valaki megszuntette...?!
+								{	//valaki megszuntette...?!
 //									System.log( "killer csotany!" );
-										}
-									}
+								}
+							}
 
-									int keepoppstatus = 0;
-									if (nearest_tt)
-									{
-										if( racerDistance < 40.0 )
+							int keepoppstatus = 0;
+							if (nearest_tt)
+							{
+								if( racerDistance < 40.0 )
+								{
+									if (raceBot)
+										if (raceBot != nearest_tt.bot)	//masik
 										{
-											if (raceBot)
-												if (raceBot != nearest_tt.bot)	//masik
-												{
-													raceBot.releaseHorn();
-													raceBot = null;
-													oppStatusTxt.changeText( null );
-													oppStatusDisplayed = 0;
-													aiChallengeState = 0;
-													abandoned2 = 0;
-												}
-
-											if (!raceBot)
-												raceBot = nearest_tt.bot;
-
-											if( !oppStatusDisplayed )
-											{
-												int	ranking = (GameLogic.CLUBMEMBERS-(GameLogic.findRacer(raceBot)-GameLogic.CLUBMEMBERS*raceBot.club));
-												oppStatusTxt.changeText("");
-												if( GameLogic.canChallenge( player, raceBot ) )
-													oppStatusDisplayed = 1;
-												else
-													oppStatusDisplayed = 2;
-
-												if( !policeState )
-													changeCamTarget2(raceBot.dummycar);
-
-											}
-											if( oppStatusDisplayed == 1 )
-												oppStatusTxt.changeColor( 0x60FFFFFF );
-											else
-											if( oppStatusDisplayed == 2 )
-												oppStatusTxt.changeColor( 0x60FF5555 );
-
-											if( !policeState && racerDistance < 20.0 )
-											{//ha akar, kihiv
-												if( !abandoned2 )
-												{
-													if( aiChallengeState )
-													{
-														if( Math.random() > 0.4 )
-															raceBot.releaseHorn();
-														else
-															raceBot.pressHorn();
-													}
-													else
-													{
-														//talan kihiv
-														if( Math.random() < 0.4 )       //40% az eselye, hogy kihiv
-														{	//ha tud
-															if( GameLogic.canChallenge( raceBot, player ) )
-															{
-																raceBot.pressHorn();
-																aiChallengeState = 1;
-															}
-															else
-																abandoned2 = 1;	//ezt ugysem tudja mar...
-
-														}
-														else
-														{       //ne lehessen csalni azzal, hogy sokaig megyunk mellettuk es akkor ugyis kihivnak!
-															abandoned2 = 1;
-														}
-													}
-												}
-											}
-
-											if( racerDistance < 10.0 )
-											{//kihivhatom
-												if( player.car.getHorn() )
-												{
-													raceBot.releaseHorn();
-													//player.releaseHorn();
-													player.car.command( "sethorn 0" );
-
-													int shallWeRace = aiChallengeState;
-
-													if( !shallWeRace )
-														shallWeRace = new RacerTalkDialog( player.controller, player, raceBot, abandoned, policeState ).display();
-
-													if( shallWeRace )
-													{
-														Bot opp = raceBot;
-
-														raceState = 1;
-
-														if( aiChallengeState )
-														{
-															aiChallengeState=0;
-
-															challenger = raceBot;
-															challenged = player;
-														}
-														else
-														{
-															challenger = player;
-															challenged = raceBot;
-														}
-
-														//gc kimelese vegett:
-														if( !GameLogic.racesetup )
-															GameLogic.racesetup = new RaceSetup();
-														GameLogic.changeActiveSection( GameLogic.racesetup );
-
-													}
-													else
-													{
-														abandoned2 = 1;
-													}
-												}
-											}
-											keepoppstatus = 1;
-										}
-									}
-
-									if (!keepoppstatus)
-										if( oppStatusDisplayed )
-										{
-											if (raceBot)
-											{
-												raceBot.releaseHorn();
-												raceBot = null;
-											}
+											raceBot.releaseHorn();
+											raceBot = null;
 											oppStatusTxt.changeText( null );
 											oppStatusDisplayed = 0;
-											if( !policeState )
-												changeCamTarget2(null);
-											abandoned = 0;
+											aiChallengeState = 0;
 											abandoned2 = 0;
 										}
-								}//else: versenyben vagyok, a tobbi racer esetleg villoghat, dudalhat, beszolhat
-						}
 
-						timeLock = 0;
-					}
-					break;
+									if (!raceBot)
+										raceBot = nearest_tt.bot;
 
-				case 7:	//nightrace biztonsagi leallito timer
-					if( nrStat == NR_RACE )
-						if( nrFinished1 != nrFinished2 )
-							if( nrFinished1 || nrFinished2 )
-							{
-								int	lamerPlayer;
-
-								if( nrFinished1 )
-								{
-									nrFinished2 = 1;
-									nrTime2 = 1000.0;
-
-									if ( nrPlayerRace == 2 )
+									if( !oppStatusDisplayed )
 									{
-										player.car.command( "brake" );
-										lamerPlayer = 1;
+										int	ranking = (GameLogic.CLUBMEMBERS-(GameLogic.findRacer(raceBot)-GameLogic.CLUBMEMBERS*raceBot.club));
+										oppStatusTxt.changeText("");
+										if( GameLogic.canChallenge( player, raceBot ) )
+											oppStatusDisplayed = 1;
+										else
+											oppStatusDisplayed = 2;
+
+										if( !policeState )
+											changeCamTarget2(raceBot.dummycar);
+
 									}
+									if( oppStatusDisplayed == 1 )
+										oppStatusTxt.changeColor( 0x60FFFFFF );
 									else
-										nrBot2.stop();
+									if( oppStatusDisplayed == 2 )
+										oppStatusTxt.changeColor( 0x60FF5555 );
+
+									if( !policeState && racerDistance < 20.0 )
+									{//ha akar, kihiv
+										if( !abandoned2 )
+										{
+											if( aiChallengeState )
+											{
+												if( Math.random() > 0.4 )
+													raceBot.releaseHorn();
+												else
+													raceBot.pressHorn();
+											}
+											else
+											{
+												//talan kihiv
+												if( Math.random() < 0.4 )       //40% az eselye, hogy kihiv
+												{	//ha tud
+													if( GameLogic.canChallenge( raceBot, player ) )
+													{
+														raceBot.pressHorn();
+														aiChallengeState = 1;
+													}
+													else
+														abandoned2 = 1;	//ezt ugysem tudja mar...
+
+												}
+												else
+												{       //ne lehessen csalni azzal, hogy sokaig megyunk mellettuk es akkor ugyis kihivnak!
+													abandoned2 = 1;
+												}
+											}
+										}
+									}
+
+									if( racerDistance < 10.0 )
+									{//kihivhatom
+										if( player.car.getHorn() )
+										{
+											raceBot.releaseHorn();
+											//player.releaseHorn();
+											player.car.command( "sethorn 0" );
+
+											int shallWeRace = aiChallengeState;
+
+											if( !shallWeRace )
+												shallWeRace = new RacerTalkDialog( player.controller, player, raceBot, abandoned, policeState ).display();
+
+											if( shallWeRace )
+											{
+												Bot opp = raceBot;
+
+												raceState = 1;
+
+												if( aiChallengeState )
+												{
+													aiChallengeState=0;
+
+													challenger = raceBot;
+													challenged = player;
+												}
+												else
+												{
+													challenger = player;
+													challenged = raceBot;
+												}
+
+												//gc kimelese vegett:
+												if( !GameLogic.racesetup )
+													GameLogic.racesetup = new RaceSetup();
+												GameLogic.changeActiveSection( GameLogic.racesetup );
+
+											} 
+											else
+											{
+												abandoned2 = 1;
+											}
+										}
+									}
+									keepoppstatus = 1;
+								}
+							}
+
+							if (!keepoppstatus)
+							if( oppStatusDisplayed )
+							{
+								if (raceBot)
+								{
+									raceBot.releaseHorn();
+									raceBot = null;
+								}
+								oppStatusTxt.changeText( null );
+								oppStatusDisplayed = 0;
+								if( !policeState )
+									changeCamTarget2(null);
+								abandoned = 0;
+								abandoned2 = 0;
+							}
+						}//else: versenyben vagyok, a tobbi racer esetleg villoghat, dudalhat, beszolhat
+					}
+
+					timeLock = 0;
+				}
+				break;
+
+			case 7:	//nightrace biztonsagi leallito timer
+				if( nrStat == NR_RACE )
+					if( nrFinished1 != nrFinished2 )
+						if( nrFinished1 || nrFinished2 )
+						{
+							int	lamerPlayer;
+
+							if( nrFinished1 )
+							{
+								nrFinished2 = 1;
+								nrTime2 = 1000.0;
+
+								if ( nrPlayerRace == 2 )
+								{
+									player.car.command( "brake" );
+									lamerPlayer = 1;
 								}
 								else
-								{
-									nrFinished1 = 1;
-									nrTime1 = 1000.0;
-
-									nrBot1.stop();
-								}
-
-								//-------------copied to here:
-								Vector3 v = new Vector3();
-								v.diff( player.car.getPos(), pF );
-								float dist = v.length();
-
-								//Vector3 u = osd.getViewport().unproject( pS, cam.getInfo( GII_CAMERA ) );
-								//System.log( u.toString() );
-
-								//8 mp forgas
-								nrShowRaceFinish = (nrPlayerRace == 2 || nrWatching || ((dist <= 25.0) && player.car.getSpeedSquare() < TINY_SPEED_SQ));		//PJ!!
-
-								if( nrShowRaceFinish )
-								{
-									if( nrPlayerRace == 2 || nrWatching )
-									{
-										changeCamFollow();	//hatha epp tv-zett verseny kozben, stb.
-
-										cam.command( "dist 2.5 10.0");
-										cam.command( "smooth 0.5 0.5");
-										cam.command( "force 1.6 0.5 -0.7" );	//defaults are in config.java
-										cam.command( "torque 0.05" );
-										cam.command( "angle 0 4.0 0.7853" );		//0.7853 = (2*pi)/8.0
-										cam.command( "dist 5.5 6.5");
-
-										if( lamerPlayer )
-											nrDelay = 3;	//valahol menet kozben forgunk + fekezunk...
-										else
-											nrDelay = 8;
-									}
-								}
-								nrStat = NR_FINISH;
+									nrBot2.stop();
 							}
-					break;
+							else
+							{
+								nrFinished1 = 1;
+								nrTime1 = 1000.0;
 
-				case 8:	//quickrace 'begin new race' req timer
-					if(	GameLogic.gameMode == GameLogic.GM_QUICKRACE )	//demoban nem
-						if( !(new YesNoDialog( player.controller, Dialog.DF_MODAL|Dialog.DF_DEFAULTBG|Dialog.DF_FREEZE, "QUICKRACE", "Want another Race?" ).display()) )
-						{
-							startQuickRace();
-							break;
+								nrBot1.stop();
+							}
+
+							//-------------copied to here:
+							Vector3 v = new Vector3();
+							v.diff( player.car.getPos(), pF );
+							float dist = v.length();
+
+							//Vector3 u = osd.getViewport().unproject( pS, cam.getInfo( GII_CAMERA ) );
+							//System.log( u.toString() );
+
+							//8 mp forgas
+							nrShowRaceFinish = (nrPlayerRace == 2 || nrWatching || ((dist <= 25.0) && player.car.getSpeedSquare() < TINY_SPEED_SQ));		//PJ!!
+
+							if( nrShowRaceFinish )
+							{
+								if( nrPlayerRace == 2 || nrWatching )
+								{
+									changeCamFollow();	//hatha epp tv-zett verseny kozben, stb.
+
+									cam.command( "dist 2.5 10.0");
+									cam.command( "smooth 0.5 0.5");
+									cam.command( "force 1.6 0.5 -0.7" );	//defaults are in config.java
+									cam.command( "torque 0.05" );
+									cam.command( "angle 0 4.0 0.7853" );		//0.7853 = (2*pi)/8.0
+									cam.command( "dist 5.5 6.5");
+
+									if( lamerPlayer )
+										nrDelay = 3;	//valahol menet kozben forgunk + fekezunk...
+									else
+										nrDelay = 8;
+								}
+							}
+							nrStat = NR_FINISH;
 						}
+				break;
+
+			case 8:	//quickrace 'begin new race' req timer
+                if(	GameLogic.gameMode == GameLogic.GM_QUICKRACE )	//demoban nem
+				if( !(new YesNoDialog( player.controller, Dialog.DF_MODAL|Dialog.DF_DEFAULTBG|Dialog.DF_FREEZE, "QUICKRACE", "Want another Race?" ).display()) )
+				{
+					startQuickRace();
+					break;
+				}
+				GameLogic.changeActiveSection( parentState );
+				break;
+
+			case 9:	//3..2...1..go dayrace
+				setMessage( "3" );
+				speech3.play();
+				addTimer( 1, 10 );
+				break;
+
+			case 10:
+				setMessage( "2" );
+				speech2.play();
+				addTimer( 1, 11 );
+				break;
+
+			case 11:
+				setMessage( "1" );
+				speech1.play();
+
+				raceBot.brain.command( "AI_BeginRace 1.0" );
+
+				addTimer( 1, 12 );
+				break;
+
+			case 12:
+				setMessage( "GO!" );
+				speechGO.play();
+				startRace2();
+				break;
+
+			case 13:	//rendor buntetesi utani 'szabadido'
+				roamFree=0;
+				break;
+
+			case 14:	//verseny utani celkamera (slow motion)
+				if ( GameLogic.gameMode == GameLogic.GM_DEMO )
+				{
+					System.timeWarp( 1.0 );
+					if (cam)
+						cam.command( "simulate 0" );
+					cleanupRace();
 					GameLogic.changeActiveSection( parentState );
-					break;
+				} else
+				{
+					System.timeWarp( 1.0 );
+					if (cam)
+						cam.command( "simulate 0" );
 
-				case 9:	//3..2...1..go dayrace
-					setMessage( "3" );
-					speech3.play();
-					addTimer( 1, 10 );
-					break;
-
-				case 10:
-					setMessage( "2" );
-					speech2.play();
-					addTimer( 1, 11 );
-					break;
-
-				case 11:
-					setMessage( "1" );
-					speech1.play();
-
-					raceBot.brain.command( "AI_BeginRace 1.0" );
-
-					addTimer( 1, 12 );
-					break;
-
-				case 12:
-					setMessage( "GO!" );
-					speechGO.play();
-					startRace2();
-					break;
-
-				case 13:	//rendor buntetesi utani 'szabadido'
-					roamFree=0;
-					break;
-
-				case 14:	//verseny utani celkamera (slow motion)
-					if ( GameLogic.gameMode == GameLogic.GM_DEMO )
+					if ( raceDialog )
 					{
-						System.timeWarp( 1.0 );
-						if (cam)
-							cam.command( "simulate 0" );
-						cleanupRace();
-						GameLogic.changeActiveSection( parentState );
+						Frontend.loadingScreen.show( raceDialog );
+						Frontend.loadingScreen.userWait();
+					}
+
+					cleanupRace();
+					if (player.car)
+					{
+						player.car.command( "reset" );
+						player.car.command( "start" );
+						changeCamTarget(player.car);
+						changeCamFollow();
+					}
+
+					if(	GameLogic.gameMode == GameLogic.GM_QUICKRACE )
+					{
+						addTimer( 3, 8 );	//nem jo a sleep, mert kozben eloveheti az ingame menut!!
 					} else
 					{
-						System.timeWarp( 1.0 );
-						if (cam)
-							cam.command( "simulate 0" );
-
-						if ( raceDialog )
-						{
-							Frontend.loadingScreen.show( raceDialog );
-							Frontend.loadingScreen.userWait();
-						}
-
-						cleanupRace();
-						if (player.car)
-						{
-							player.car.command( "reset" );
-							player.car.command( "start" );
-							changeCamTarget(player.car);
-							changeCamFollow();
-						}
-
-						if(	GameLogic.gameMode == GameLogic.GM_QUICKRACE )
-						{
-							addTimer( 3, 8 );	//nem jo a sleep, mert kozben eloveheti az ingame menut!!
-						} else
-						{
-							Sound.changeMusicSet( Sound.MUSIC_SET_DRIVING );
-						}
+						Sound.changeMusicSet( Sound.MUSIC_SET_DRIVING );
 					}
-					break;
+				}
+				break;
 			}
 		}
-	}
+    }
 
-	public void handleEvent( GameRef obj_ref, int event, String param )
-	{
-		if( event == EVENT_COLLISION )
-		{
+    public void handleEvent( GameRef obj_ref, int event, String param )
+    {
+        if( event == EVENT_COLLISION )
+        {
 			collision=1;	//status frissiteshez
 
 			float time = System.simTime();
@@ -3351,7 +3351,7 @@ public class City extends Track
 		{
 			//System.log( param );
 			String cmd = param.token(0);
-			if( cmd == "car_add" )
+            if( cmd == "car_add" )
 			{
 				TrafficTracker tt = new TrafficTracker();
 				tt.id = param.token(1).intValue();
@@ -3363,7 +3363,7 @@ public class City extends Track
 				{
 					tt.m = nav.addMarker( Marker.RR_POLICE, tt.car );
 					policeCars.addElement( tt );
-				}
+				} 
 				else
 				{
 					//keressuk meg melyik ai az,, tegyuk ki a megfelelo markert!
@@ -3381,10 +3381,10 @@ public class City extends Track
 								//legjobb megoldas, de lassu!
 								//opp.createCar( map, new Vehicle( opp.dummycar ) );
 
-								RenderRef render = new RenderRef( map, ((Bot)opp).driverID, "botfigura-corpse" );
+						        RenderRef render = new RenderRef( map, ((Bot)opp).driverID, "botfigura-corpse" );
 								tt.car.command( "corpse 0 " + render.id() );
 
-								((Bot)opp).world=map;
+							    ((Bot)opp).world=map;
 								//opp.setEventMask( EVENT_COMMAND );
 								opp.addNotification( ((Bot)opp).dummycar, EVENT_COMMAND, EVENT_SAME, null );
 
@@ -3395,7 +3395,7 @@ public class City extends Track
 				}
 			}
 			else
-			if( cmd == "car_rem" )
+            if( cmd == "car_rem" )
 			{
 				int	id = param.token(1).intValue();
 				int	i;
@@ -3414,7 +3414,7 @@ public class City extends Track
 						nav.remMarker( tt.m );
 
 						//tt.bot.leaveCar(1);
-
+						
 						tt.car.command( "corpse 0 0" );
 
 						tt.bot.remNotification( tt.bot.dummycar, EVENT_COMMAND );
@@ -3423,8 +3423,8 @@ public class City extends Track
 						return;//break;
 					}
 			}
-		}
-	}
+        }
+    }
 
 	public void handleMessage( Message m )
 	{
@@ -3445,7 +3445,7 @@ public class City extends Track
 					osd.hideGroup( nrWatchingGroup );
 					enableOsd( 1 );
 					nrWatching = 0;
-				}
+				} 
 				else
 				{
 					osd.hideGroup( nightRaceGroup );
@@ -3506,14 +3506,14 @@ public class City extends Track
 					nrBot1.brain.command("camera 0");
 					nrBot2.brain.command("camera 0");
 				}
-
+				
 				restoreCamera();
-
+	
 				enableOsd( 1 );
 
 				if (nrPlayerPaused)
 				{
-					player.car.command( "start" );
+					player.car.command( "start" ); 
 					nrPlayerPaused = 0;
 				}
 			}
@@ -3530,9 +3530,9 @@ public class City extends Track
 //----------------------------------------------------------------------------------------
 public class RacerTalkDialog extends Dialog
 {
-	final static int CMD_RACE = 0;
-	final static int CMD_EXIT = 1;
-	final static int CMD_EXITNRACE = 2;
+    final static int CMD_RACE = 0;
+    final static int CMD_EXIT = 1;
+    final static int CMD_EXITNRACE = 2;
 
 	static	String[]		Text_honkin;
 	static	String[]		Text_letsRace;
@@ -3546,32 +3546,32 @@ public class RacerTalkDialog extends Dialog
 		if (Text_honkin == null)
 		{
 			Text_honkin = new String[2];
-			Text_honkin = new String[2];
-			Text_honkin[0] = "\"Ta buzinando pra mim, malandro?\"";
-			Text_honkin[1] = "\"Opa, que que ce quer?\"";
+				Text_honkin = new String[2];
+        		Text_honkin[0] = "\"Ta buzinando pra mim, malandro?\"";
+       			Text_honkin[1] = "\"Opa, que que ce quer?\"";
 
-			Text_letsRace = new String[1];
-			Text_letsRace[0] = "Partiu.";
+		        Text_letsRace = new String[1];
+		        Text_letsRace[0] = "Partiu.";
 
-			Text_goAway = new String[4];
-			Text_goAway[0] = "\"Cai fora, moleque!\"";
-			Text_goAway[1] = "\"Nao me estressa!\"";
-			Text_goAway[2] = "\"Agora nao da.\"";
-			Text_goAway[3] = "\"Esquece.\"";
+		        Text_goAway = new String[4];
+		        Text_goAway[0] = "\"Cai fora, moleque!\"";
+		        Text_goAway[1] = "\"Nao me estressa!\"";
+		        Text_goAway[2] = "\"Agora nao da.\"";
+		        Text_goAway[3] = "\"Esquece.\"";
 
-			Text_noWay = new String[2];
-			Text_noWay[0] = "\"De jeito nenhum, meu carro precisa de um trato!\"";
-			Text_noWay[1] = "\"Quem sabe na proxima, camarada.\"";
+		        Text_noWay = new String[2];
+		        Text_noWay[0] = "\"De jeito nenhum, meu carro precisa de um trato!\"";
+		        Text_noWay[1] = "\"Quem sabe na proxima, camarada.\"";
 
-			Text_seeYou = new String[2];
-			Text_seeYou[0] = "\"Ate a proxima, valeu!\"";
-			Text_seeYou[1] = "\"Fica na paz!\"";
+		        Text_seeYou = new String[2];
+		        Text_seeYou[0] = "\"Ate a proxima, valeu!\"";
+		        Text_seeYou[1] = "\"Fica na paz!\"";
 
-			Text_right = new String[4];
-			Text_right[0] = "\"Beleza.\"";
-			Text_right[1] = "\"Tranquilao.\"";
-			Text_right[2] = "\"Show de bola.\"";
-			Text_right[3] = "\"O.K.\"";
+		        Text_right = new String[4];
+		        Text_right[0] = "\"Beleza.\"";
+		        Text_right[1] = "\"Tranquilao.\"";
+		        Text_right[2] = "\"Show de bola.\"";
+		        Text_right[3] = "\"O.K.\"";
 		}
 	}
 
@@ -3580,23 +3580,23 @@ public class RacerTalkDialog extends Dialog
 	Player	player;
 	Racer	bot;
 
-	int     mainGroup, raceGroup1, raceGroup2, raceGroup3, raceGroup4;
-	int     canChallenge, justRaced, policeStateCopy;
+    int     mainGroup, raceGroup1, raceGroup2, raceGroup3, raceGroup4;
+    int     canChallenge, justRaced, policeStateCopy;
 
-	public RacerTalkDialog( Controller ctrl, Player player, Racer bot, int justRaced, int policeStateCopy )
-	{
-		super( ctrl, DF_FULLSCREEN|DF_DARKEN|DF_MODAL|DF_FREEZE, null, null );
+    public RacerTalkDialog( Controller ctrl, Player player, Racer bot, int justRaced, int policeStateCopy )
+    {
+        super( ctrl, DF_FULLSCREEN|DF_DARKEN|DF_MODAL|DF_FREEZE, null, null );
 		this.player = player;
 		this.bot = bot;
 		this.policeStateCopy = policeStateCopy;
 		this.init();
 
 		this.justRaced=justRaced;
-		canChallenge = GameLogic.canChallenge( player, bot );
-	}
+        canChallenge = GameLogic.canChallenge( player, bot );
+    }
 
-	public void show()
-	{
+    public void show()
+    {
 		float top=-0.80, left=-0.5, mid = 0.0, step=0.10, x, y;
 		int	i;
 
@@ -3610,18 +3610,18 @@ public class RacerTalkDialog extends Dialog
 		//textboxbg
 		osd.createRectangle( 0.0, -0.6, 1.05, 0.55, 1, City.RRT_FRAME );
 
-		osd.createText( player.name, Frontend.smallFont, Text.ALIGN_CENTER, -0.75, -0.35 );
-		osd.createText(    bot.name, Frontend.smallFont, Text.ALIGN_CENTER,  0.75, -0.35 );
+        osd.createText( player.name, Frontend.smallFont, Text.ALIGN_CENTER, -0.75, -0.35 );
+        osd.createText(    bot.name, Frontend.smallFont, Text.ALIGN_CENTER,  0.75, -0.35 );
 
-		osd.endGroup(); //nem bantjuk a hatteret!
+        osd.endGroup(); //nem bantjuk a hatteret!
 
 		Menu m;
 		Style butt0 = new Style( 0.75, 0.10, Frontend.mediumFont, Text.ALIGN_CENTER, Osd.RRT_TEST );
 
-		x=mid; y=top;
+        x=mid; y=top;
 		i = Text_honkin.length * Math.random();
-		osd.createText( Text_honkin[i], Frontend.mediumFont, Text.ALIGN_CENTER, x, y );    y+=step;
-		y+=step;
+        osd.createText( Text_honkin[i], Frontend.mediumFont, Text.ALIGN_CENTER, x, y );    y+=step;
+        y+=step;
 
 		m = osd.createMenu( butt0, x, y, 0 );
 		m.addItem( " 1. \"Quero Correr contra Voce!\"", CMD_RACE );
@@ -3632,94 +3632,94 @@ public class RacerTalkDialog extends Dialog
 		osd.createHotkey( Input.AXIS_CANCEL, Input.VIRTUAL, CMD_EXIT, this );
 		mainGroup=osd.endGroup();
 		//-------------
-		x=mid; y=top;
-		osd.createText( "\"Entao voce acha que pode me ganhar?", Frontend.mediumFont, Text.ALIGN_CENTER, x, y );      y+=step;
-		osd.createText( " Certo, ponha o dinheiro na mesa!\"", Frontend.mediumFont, Text.ALIGN_CENTER, x, y );    y+=step;
-		y+=step;
+        x=mid; y=top;
+        osd.createText( "\"Entao voce acha que pode me ganhar?", Frontend.mediumFont, Text.ALIGN_CENTER, x, y );      y+=step;
+        osd.createText( " Certo, ponha o dinheiro na mesa!\"", Frontend.mediumFont, Text.ALIGN_CENTER, x, y );    y+=step;
+        y+=step;
 
 		m = osd.createMenu( butt0, x, y, 0 );
 		i = Text_right.length * Math.random();
 		m.addItem( " 1. " + Text_right[i], CMD_EXITNRACE );
 
-		osd.createHotkey( Input.RCDIK_1, Input.KEY, CMD_EXITNRACE, this );
-		osd.hideGroup( raceGroup1=osd.endGroup() );
+        osd.createHotkey( Input.RCDIK_1, Input.KEY, CMD_EXITNRACE, this );
+        osd.hideGroup( raceGroup1=osd.endGroup() );
 		//-------------
-		x=mid; y=top;
+        x=mid; y=top;
 		i = Text_goAway.length * Math.random();
-		osd.createText( Text_goAway[i], Frontend.mediumFont, Text.ALIGN_CENTER, x, y );    y+=step;
-		y+=step;
+        osd.createText( Text_goAway[i], Frontend.mediumFont, Text.ALIGN_CENTER, x, y );    y+=step;
+        y+=step;
 
 		m = osd.createMenu( butt0, x, y, 0 );
 		i = Text_right.length * Math.random();
 		m.addItem( " 1. " + Text_right[i], CMD_EXIT );
 
-		osd.createHotkey( Input.RCDIK_1, Input.KEY, CMD_EXIT, this );
-		osd.hideGroup( raceGroup2=osd.endGroup() );
+        osd.createHotkey( Input.RCDIK_1, Input.KEY, CMD_EXIT, this );
+        osd.hideGroup( raceGroup2=osd.endGroup() );
 		//-------------
-		x=mid; y=top;
-		i = Text_noWay.length * Math.random();
+        x=mid; y=top;
+        i = Text_noWay.length * Math.random();
 		osd.createText( Text_noWay[i], Frontend.mediumFont, Text.ALIGN_CENTER, x, y );    y+=step;
-		y+=step;
+        y+=step;
 
 		m = osd.createMenu( butt0, x, y, 0 );
 		i = Text_seeYou.length * Math.random();
 		m.addItem( " 1. " + Text_seeYou[i], CMD_EXIT );
 
-		osd.createHotkey( Input.RCDIK_1, Input.KEY, CMD_EXIT, this );
-		osd.hideGroup( raceGroup3=osd.endGroup() );
+        osd.createHotkey( Input.RCDIK_1, Input.KEY, CMD_EXIT, this );
+        osd.hideGroup( raceGroup3=osd.endGroup() );
 		//-------------
-		x=mid; y=top;
-		osd.createText( "\"De fuga na policia antes!\"", Frontend.mediumFont, Text.ALIGN_CENTER, x, y );    y+=step;
-		y+=step;
+        x=mid; y=top;
+        osd.createText( "\"De fuga na policia antes!\"", Frontend.mediumFont, Text.ALIGN_CENTER, x, y );    y+=step;
+        y+=step;
 
 		m = osd.createMenu( butt0, x, y, 0 );
 		i = Text_right.length * Math.random();
 		m.addItem( " 1. " + Text_right[i], CMD_EXIT );
 
-		osd.createHotkey( Input.RCDIK_1, Input.KEY, CMD_EXIT, this );
-		osd.hideGroup( raceGroup4=osd.endGroup() );
+        osd.createHotkey( Input.RCDIK_1, Input.KEY, CMD_EXIT, this );
+        osd.hideGroup( raceGroup4=osd.endGroup() );
 
 
-		super.show();
-	}
+        super.show();
+    }
 
-	public void osdCommand( int cmd )
-	{
-		if( cmd == CMD_RACE )
-		{
-			osd.hideGroup( mainGroup );
+    public void osdCommand( int cmd )
+    {
+        if( cmd == CMD_RACE )
+        {
+            osd.hideGroup( mainGroup );
 
 			if( policeStateCopy )
 			{
 				osd.showGroup( raceGroup4 );	//loose your tail
 			}
 			else
-			if( canChallenge )
+            if( canChallenge )
 			{
 				if( justRaced )
 					osd.showGroup( raceGroup3 );	//another time
 				else
 					osd.showGroup( raceGroup1 );	//okay
 			}
-			else
+            else
 			{
 				osd.showGroup( raceGroup2 );	//no, kiddy
 			}
 			osd.changeSelection2( -1, 0 );
-		}
-		else
-		if( cmd == CMD_EXIT )
-		{
+        }
+        else
+        if( cmd == CMD_EXIT )
+        {
 			result = 0;
 			notify();
-		}
-		else
-		if( cmd == CMD_EXITNRACE )
-		{
+        }
+        else
+        if( cmd == CMD_EXITNRACE )
+        {
 			result = 1;
 			notify();
-		}
-	}
+        }
+    }
 }
 //----------------------------------------------------------------------------------------
 public class FineDialog extends CsDialog
@@ -3928,7 +3928,7 @@ public class TrafficTracker
 	int	id;			//gameinstance
 	GameRef	car;	//gameinstance
 	int	trafficId;	//ctCar pointer
-	Marker	m;
+	Marker	m;	
 	Bot	bot;		//policecarnal null
 }
 
