@@ -94,7 +94,8 @@ public class GameLogic extends GameType implements Runnable
 	final static String	activeControlFile; //= controlSaveDir + "active_control_set";
 
 	final static int ROC_ENTRYFEE  = 100000;
-	 
+	final static float ROC_MIN_CAR_PRESTIGE = 7.5;
+
 
 	final static int		CLUBS = 3;
 	final static int		CLUBMEMBERS = 40;
@@ -241,6 +242,9 @@ public class GameLogic extends GameType implements Runnable
 		//main menu preload by BB93
 		System.openLib( "sl\\Scripts\\MainMenu.class" );
 		System.openLib( "maps\\Addon_Maps\\Home.rpk" );
+
+		// Load scene
+		System.openLib( "sl\\Scripts\\Scene.class" );
 
 		initVehicleTypes();
 
@@ -727,7 +731,8 @@ public class GameLogic extends GameType implements Runnable
 	{
 		float	limit = 0.05;
 
-//		System.log(challenger.club + " :: " + challenged.club);
+		System.log(challenger.club + " :: " + challenged.club);
+		System.log(challenger.prestige + " :: " + challenged.prestige);
 		if( challenger.prestige+limit >= challenged.prestige  )
 		{
 			if( challenger.club == challenged.club )

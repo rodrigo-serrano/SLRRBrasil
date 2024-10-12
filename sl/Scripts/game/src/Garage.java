@@ -1439,7 +1439,7 @@ public class Garage extends Scene implements GameState
 
 			entryFee = GameLogic.ROC_ENTRYFEE;
 			minRanking = 5;
-			minCarPrestige = 7.5;
+			minCarPrestige = GameLogic.ROC_MIN_CAR_PRESTIGE;
 			maxPartsWeight = 1000;
 
 			float	curCarPrestige;
@@ -1803,15 +1803,18 @@ public class ROCEntryDialog extends Dialog
 
     public void osdCommand( int cmd )
     {
-        if (cmd == CMD_INFO0)
+        if (cmd == CMD_INFO0) {
 			info("Voce deve estar entre os jogadores mais bem classificados. \n Esteja entre os cinco primeiros do Clube: Chama Vermelha e você poderá participar da R.O.C.");
-		else if (cmd == CMD_INFO1)
-			info("Traga um carro altamente ajustado e respeitado. Seu carro deve ter pelo menos 750 pontos de prestígio.");
-		else if (cmd == CMD_INFO2)
-			info("Junte a taxa de inscricao: $100000. Você receberá serviços gratuitos de reparo e ajuste por esta taxa.");
-		else if (cmd == CMD_INFO3)
+		} else if (cmd == CMD_INFO1) {
+			int prestigeROC = (GameLogic.ROC_MIN_CAR_PRESTIGE * 100);
+			info("Traga um carro altamente ajustado e respeitado. Seu carro deve ter pelo menos " + prestigeROC + " pontos de prestígio.");
+		} else if (cmd == CMD_INFO2) {
+			info("Junte a taxa de inscricao: R$100000. Você receberá serviços gratuitos de reparo e ajuste por esta taxa.");
+		} else if (cmd == CMD_INFO3) {
 			info("O peso total do seu estoque de pecas está limitado a 1 Tonelada. \n Nao se esqueça de trazer pneus sobressalentes suficientes e N2O.");
-        if( cmd == CMD_CANCEL )
+		}
+
+		if( cmd == CMD_CANCEL )
         {
 			result = 0;
 			notify();
