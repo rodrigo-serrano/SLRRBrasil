@@ -80,7 +80,7 @@ public class RaceDialog extends CsDialog
 					str = str + "Chave na Chave";
 			}
 			else
-				str = str + "$" + param;
+				str = str + "R$" + param;
 		}
 		else
 		if( mode == 2 )
