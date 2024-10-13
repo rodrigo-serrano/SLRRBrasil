@@ -1,6 +1,7 @@
 .idea
 .vscode
 *.exe
+!StreetLegal_Redline.exe
 /misc
 /maps
 decals.rpk
@@ -23,3 +24,5 @@ particles.rpk
 objects.rpk
 /music
 *.log
+*.iml
+/system_debug

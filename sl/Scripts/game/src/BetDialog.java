@@ -29,19 +29,17 @@ public class BetDialog extends Dialog
 	Style	sld_h	= new Style(0.7, 0.03,   Frontend.mediumFont, Text.ALIGN_LEFT,  new ResourceRef(Osd.RID_SLD_BACK));
 	
 	int bet = GameLogic.player.getBet(); //player's bet
-	int targetBet = Racer.MIN_BET; //bet which we're referencing to
+	int targetBet; //bet which we're referencing to
 	
 	public BetDialog(Controller ctrl, Racer rc)
 	{
 		super(ctrl, DF_DEFAULTBG|DF_DARKEN|DF_MODAL|DF_FREEZE, STR_PLACE_BET, STR_OK+";"+STR_CANCEL);
 		escapeCmd = CMD_CANCEL;
 		
-		targetBet = GameLogic.player.calcBet(rc);
-		if(targetBet == Racer.BET_PINKS) targetBet = calcPinks();
-		if(bet > targetBet) bet = targetBet;
+		targetBet = GameLogic.player.calcBet();
 
 		Menu m;
-		Style menuStyle = new Style(0.45, 0.12, charset, Text.ALIGN_LEFT, Osd.RRT_TEST);
+		Style menuStyle = new Style(0.80, 0.12, charset, Text.ALIGN_LEFT, Osd.RRT_TEST);
 		
 		spacing = sld_k.rt.height; //height of slider's holder rectangle, we use it as a vertical spacing metric unit
 		
@@ -50,15 +48,35 @@ public class BetDialog extends Dialog
 		
 		m = osd.createMenu(menuStyle, xpos+0.1, ypos-0.035, 0);
 		m.setSliderStyle(sld_h, sld_k);
-		
-		sld = m.addItem(STR_BET, CMD_SLIDER, bet, Racer.MIN_BET, targetBet, Racer.BET_STEPS, null);
+
+		int minBet = calcMinBet();
+
+		sld = m.addItem(STR_BET, CMD_SLIDER, bet, minBet, targetBet, Racer.BET_STEPS, null);
+
 		sld.setValue(bet);
-		sld.changeVLabelText("$"+bet);
-		
+		sld.changeVLabelText("R$"+bet);
+
 		osd.globalHandler = this;
 		osdCommand(CMD_SLIDER);
 	}
-	
+
+	public int calcBet(Racer rc)
+	{
+		return (int)((((rc.prestige/3*0.3)*(rc.getCarPrestige()/0.3*3))+1000)*rc.club);
+	}
+
+	public int calcMinBet() {
+		int club = (GameLogic.player.club+1);
+		float percentageMoney = GameLogic.player.money * 0.01;
+		float minBet = (Racer.MIN_BET*club+percentageMoney);
+
+		if (minBet > targetBet) {
+			minBet = Racer.MIN_BET*club;
+		}
+
+		return (int)minBet;
+	}
+
 	public int calcPinks()
 	{
 		return Racer.MIN_BET*Racer.BET_STEPS*(GameLogic.player.club+1);
@@ -83,15 +101,13 @@ public class BetDialog extends Dialog
 				int value = (int)sld.value;
 				String str = "";
 				
-				if(value < calcPinks())
-				{
-					str = "$" + value;
-					bet = value;
-				}
-				else
+				if(value == Racer.BET_PINKS)
 				{
 					str = STR_PINKS;
 					bet = Racer.BET_PINKS;
+				} else {
+					str = "R$" + value;
+					bet = value;
 				}
 				
 				sld.changeVLabelText(str);

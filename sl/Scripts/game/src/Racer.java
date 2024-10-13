@@ -20,10 +20,11 @@ public class Racer extends GameType
 
 	//RAXAT: adjustable night race bet parameters
 	final static int	MIN_BET		= 1000; //minimum bet
-	final static int	BET_STEPS	= 20;
-	final static int	BET_PINKS	= -1; //if we return this value, outside classes will recognize it as a pink slips bet
+	final static int	BET_STEPS	= 10;
+	final static int	BET_PINKS	= 0; //if we return this value, outside classes will recognize it as a pink slips bet
 	final static float	BET_PRESTIGE_WEIGHT_RACER = 3; //how does racer prestige affects the bet
 	final static float	BET_PRESTIGE_WEIGHT_VEHICLE = 0.3; //how does car prestige affects the bet
+	final static float MIN_CAR_PRESTIGE_PINKS = GameLogic.ROC_MIN_CAR_PRESTIGE * 3.5; // minimum car prestige to allow pink slips
 
 	Vehicle		car;
 	String		name;
@@ -107,20 +108,32 @@ public class Racer extends GameType
 		return bet;
 	}
 
-	//RAXAT: night race bet
-	public int calcBet(Racer rc)
+	public int calcBet()
 	{
-		float mul_pp = rc.prestige/prestige;
-		float mul_pc = rc.getCarPrestige()/getCarPrestige();
-
 		int result = 0;
-		if(mul_pp > 0.0 && mul_pc > 0.0) result = (int)((((1.0/mul_pp)*BET_PRESTIGE_WEIGHT_RACER*BET_STEPS)*MIN_BET+((1.0/mul_pc)*BET_STEPS*MIN_BET))*BET_PRESTIGE_WEIGHT_VEHICLE)*(club+1);
+		float cprestige = getCarPrestige();
+		float pprestige = prestige*PRESTIGE_SCALE;
 
-		//BUG! sometimes it could return over 100K bet in green club, why?
-		if(result > getMaxBet()) return BET_PINKS;
-		else if(result < MIN_BET || money < bet) return getMinBet();
+		float mul_pp = pprestige/BET_PRESTIGE_WEIGHT_RACER;
+		float mul_pc = cprestige/BET_PRESTIGE_WEIGHT_VEHICLE;
 
-		if(result > money) result = money; //patch
+		if(mul_pp > 0.0 && mul_pc > 0.0) {
+			float racerCalc = (mul_pp*BET_PRESTIGE_WEIGHT_VEHICLE);
+			float vehicleCalc = (mul_pc*BET_PRESTIGE_WEIGHT_RACER);
+			float resultCalc = (racerCalc*vehicleCalc+MIN_BET)*(club+1);
+			result = (int) resultCalc;
+		}
+
+		boolean isGreenClub = (club+1 < 2);
+		boolean canBePinks = (!isGreenClub && cprestige > MIN_CAR_PRESTIGE_PINKS);
+
+		if(canBePinks && result > getMaxBet()) {
+			return BET_PINKS;
+		} else if(result < MIN_BET || money < bet) {
+			return getMinBet();
+		}
+
+		if(!isGreenClub && result > money) result = money; //patch
 
 		return result;
 	}
